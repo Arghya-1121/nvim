@@ -23,7 +23,7 @@ return {
       local config = {
         cmd = {
           jdtls_path .. "/bin/jdtls",
-          "--jvm-arg=-javaagent:" .. jdtls_path .. "/lombok.jar", -- optional, remove if not using lombok
+          "--jvm-arg=-javaagent:" .. jdtls_path .. "/lombok.jar",
           "-data",
           workspace_folder,
         },
@@ -35,26 +35,37 @@ return {
             configuration = {
               runtimes = {
                 {
-                  name = "JavaSE-17",
-                  path = "/usr/lib/jvm/java-17-openjdk", -- adjust this if different
+                  name = "JavaSE-21",
+                  path = "/usr/lib/jvm/java-21-openjdk/",
                 },
               },
             },
           },
         },
+
         init_options = {
-          bundles = {
-            vim.fn.glob(
-              home
-                .. "/.local/share/nvim/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
-              1
-            ),
-          },
+          bundles = (function()
+            local home = os.getenv("HOME")
+            local bundles = {
+              vim.fn.glob(
+                home .. "/.local/share/nvim/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin-*.jar",
+                true
+              ),
+            }
+            vim.list_extend(
+              bundles,
+              vim.split(
+                vim.fn.glob(home .. "/.local/share/nvim/mason/packages/java-test-extension/server/*.jar", true),
+                "\n"
+              )
+            )
+            return bundles
+          end)(),
         },
+
         on_attach = function(client, bufnr)
           require("jdtls.setup").add_commands()
-          jdtls.setup_dap({ hotcodereplace = "auto" })
-          jdtls.dap.setup_dap_main_class_configs()
+          require("jdtls.dap").setup_dap_main_class_configs()
 
           local opts = { buffer = bufnr, silent = true }
           vim.keymap.set("n", "<leader>di", jdtls.organize_imports, opts)
@@ -71,8 +82,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      servers = {
-        jdtls = nil,
+      setup = {
+        jdtls = function()
+          return true
+        end,
       },
     },
   },
