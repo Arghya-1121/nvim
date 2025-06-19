@@ -84,7 +84,7 @@ return {
     opts = {
       setup = {
         jdtls = function()
-          return true
+          return nil
         end,
       },
     },
