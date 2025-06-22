@@ -1,9 +1,24 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
+vim.o.directory = "/tmp/"
+vim.o.undodir = "/tmp/"
+vim.o.backupdir = "/tmp/"
+vim.env.XDG_CACHE_HOME = "/tmp"
+vim.env.NVIM_LOG_FILE = "/tmp/nvim.log"
+vim.api.nvim_create_autocmd("BufReadPre", {
+  pattern = "*",
+  callback = function()
+    if vim.fn.getfsize(vim.fn.expand("<afile>")) > 1024 * 1024 * 10 then -- 5MB
+      vim.opt.swapfile = false
+      vim.opt.backup = false
+      vim.opt.undofile = false
+    end
+  end,
+})
+vim.o.mouse = ""
 vim.opt.number = true
 vim.opt.relativenumber = true
--- Set default indent to 4 spaces
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
