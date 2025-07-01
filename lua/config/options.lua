@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     end
   end,
 })
-vim.o.mouse = ""
+vim.o.mouse = "nv"
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
