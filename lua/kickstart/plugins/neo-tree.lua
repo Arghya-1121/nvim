@@ -15,6 +15,9 @@ return {
     { '<leader>e', ':Neotree toggle<CR>', desc = 'Toggle file [E]xplorer' },
   },
   opts = {
+    window = {
+      width = 30,
+    },
     filesystem = {
       filtered_items = {
         visible = true,
