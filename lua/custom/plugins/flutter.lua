@@ -36,7 +36,7 @@ return {
         },
         dev_log = {
           enabled = true,
-          notify_errors = true,
+          notify_errors = false,
           filter = nil,
           -- open_cmd = "7split",
           focus_on_open = false,
@@ -59,7 +59,7 @@ return {
         },
         ui = {
           border = 'rounded',
-          notify_errors = true,
+          notify_errors = false,
         },
       }
       if vim.fn.expand '%:t' == 'pubspec.yaml' then

@@ -7,12 +7,12 @@ return {
     local alpha = require 'alpha'
     local dashboard = require 'alpha.themes.dashboard'
     local custom_icons = {
-      new_file = '', -- New File
-      files = '', -- Find Files
-      repo = '', -- Find Project/Repo
-      restore = '', -- Recent Files
-      close = '', -- Quit
-      text = '', -- Find Text
+      new_file = '',
+      files = '',
+      repo = '',
+      restore = '',
+      close = '',
+      text = '',
     }
     local function get_header(_, _)
       return {
