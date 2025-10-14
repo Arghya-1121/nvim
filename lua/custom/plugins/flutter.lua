@@ -9,7 +9,6 @@ return {
       'nvim-telescope/telescope.nvim',
       'mfussenegger/nvim-dap',
       'rcarriga/nvim-dap-ui',
-      'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       require('flutter-tools').setup({
@@ -66,10 +65,6 @@ return {
             client.server_capabilities.semanticTokensProvider = nil
             client.server_capabilities.documentFormattingProvider = false
             client.server_capabilities.documentRangeFormattingProvider = false
-            
-            -- Add LSP capabilities for CMP
-            local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            client.server_capabilities = vim.tbl_deep_extend('force', client.server_capabilities, capabilities)
             
             -- Enable inlay hints
             if client.server_capabilities.inlayHintProvider then
