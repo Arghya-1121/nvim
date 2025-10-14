@@ -4,7 +4,7 @@ return {
     'neovim/nvim-lspconfig',
     opts = {
       servers = {
-        tsserver = {}, -- Enables support for JavaScript and TypeScript
+        tsserver = {},
       },
     },
   },
@@ -15,7 +15,7 @@ return {
       vim.list_extend(opts.ensure_installed, {
         'javascript',
         'typescript',
-        'tsx', -- for React / JSX / TSX files
+        'tsx',
         'json',
       })
     end,

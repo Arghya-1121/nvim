@@ -84,15 +84,15 @@ vim.o.scrolloff = 7
 vim.o.confirm = true
 
 -- about backup undo tree and those related stuff
-vim.o.directory = "/tmp/"
-vim.o.undodir = "/tmp/"
-vim.o.backupdir = "/tmp/"
-vim.env.XDG_CACHE_HOME = "/tmp"
-vim.env.NVIM_LOG_FILE = "/tmp/nvim.log"
-vim.api.nvim_create_autocmd("BufReadPre", {
-  pattern = "*",
+vim.o.directory = '/tmp/'
+vim.o.undodir = '/tmp/'
+vim.o.backupdir = '/tmp/'
+vim.env.XDG_CACHE_HOME = '/tmp'
+vim.env.NVIM_LOG_FILE = '/tmp/nvim.log'
+vim.api.nvim_create_autocmd('BufReadPre', {
+  pattern = '*',
   callback = function()
-    if vim.fn.getfsize(vim.fn.expand("<afile>")) > 1024 * 1024 * 10 then -- 5MB
+    if vim.fn.getfsize(vim.fn.expand '<afile>') > 1024 * 1024 * 10 then -- 5MB
       vim.opt.swapfile = false
       vim.opt.backup = false
       vim.opt.undofile = false
@@ -140,10 +140,10 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- Window resizing with Ctrl+Alt+hjkl (Alt instead of Shift)
-vim.keymap.set("n", "<C-A-h>", "<cmd>vertical resize -5<CR>", { desc = "Decrease window width" })
-vim.keymap.set("n", "<C-A-l>", "<cmd>vertical resize +5<CR>", { desc = "Increase window width" })
-vim.keymap.set("n", "<C-A-j>", "<cmd>resize +2<CR>", { desc = "Increase window height" })
-vim.keymap.set("n", "<C-A-k>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })
+vim.keymap.set('n', '<C-A-h>', '<cmd>vertical resize -5<CR>', { desc = 'Decrease window width' })
+vim.keymap.set('n', '<C-A-l>', '<cmd>vertical resize +5<CR>', { desc = 'Increase window width' })
+vim.keymap.set('n', '<C-A-j>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
+vim.keymap.set('n', '<C-A-k>', '<cmd>resize -2<CR>', { desc = 'Decrease window height' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -366,6 +366,7 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Show open buffers' })
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -863,8 +864,8 @@ require('lazy').setup({
       --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { 
-        use_icons = vim.g.have_nerd_font
+      statusline.setup {
+        use_icons = vim.g.have_nerd_font,
       }
 
       -- You can configure sections in the statusline by overriding their
