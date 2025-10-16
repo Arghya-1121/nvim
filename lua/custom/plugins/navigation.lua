@@ -21,19 +21,19 @@ return {
     },
   },
 
-  {
-    "simrat39/symbols-outline.nvim",
-    cmd = "SymbolsOutline",
-    keys = {
-      { "<leader>co", "<cmd>SymbolsOutline<cr>", desc = "Code Outline" },
-    },
-    opts = {
-      position = "right",
-      width = 25,
-      auto_close = true,
-      auto_preview = true,
-      show_numbers = true,
-      show_relative_numbers = true,
-    },
-  },
+  -- {
+  --   "simrat39/symbols-outline.nvim",
+  --   cmd = "SymbolsOutline",
+  --   keys = {
+  --     { "<leader>co", "<cmd>SymbolsOutline<cr>", desc = "Code Outline" },
+  --   },
+  --   opts = {
+  --     position = "right",
+  --     width = 25,
+  --     auto_close = true,
+  --     auto_preview = true,
+  --     show_numbers = true,
+  --     show_relative_numbers = true,
+  --   },
+  -- },
 }
