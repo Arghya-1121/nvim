@@ -1,4 +1,50 @@
 return {
+  -- Kotlin Language Server
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        kotlin_language_server = {
+          settings = {
+            kotlin = {
+              compiler = {
+                jvm = {
+                  target = "21"
+                }
+              },
+              indexing = {
+                enabled = true,
+              },
+              completion = {
+                snippets = {
+                  enabled = true,
+                },
+              },
+              linting = {
+                debounceTime = 300,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  -- Treesitter support for Kotlin
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, {
+          "java",
+          "kotlin",
+          "groovy", -- For Gradle build files
+        })
+      end
+    end,
+  },
+
+  -- Java Language Server with Kotlin integration
   {
     "mfussenegger/nvim-jdtls",
     ft = { "java" },
@@ -177,12 +223,26 @@ return {
           map("n", "<leader>ja", vim.lsp.buf.code_action, "Code Action")
           map("v", "<leader>ja", vim.lsp.buf.code_action, "Code Action")
           
-          -- Build commands
-          map("n", "<leader>jb", ":!mvn clean install<CR>", "Maven Build")
-          map("n", "<leader>jB", ":!gradle build<CR>", "Gradle Build")
-          map("n", "<leader>jr", ":!mvn spring-boot:run<CR>", "Maven Run")
-          map("n", "<leader>jR", ":!gradle bootRun<CR>", "Gradle Run")
-          map("n", "<leader>jC", ":!mvn clean<CR>", "Maven Clean")
+          -- Build commands (Maven)
+          map("n", "<leader>jmb", ":!mvn clean install<CR>", "Maven Build")
+          map("n", "<leader>jmr", ":!mvn spring-boot:run<CR>", "Maven Run")
+          map("n", "<leader>jmt", ":!mvn test<CR>", "Maven Test")
+          map("n", "<leader>jmc", ":!mvn clean<CR>", "Maven Clean")
+          map("n", "<leader>jmp", ":!mvn package<CR>", "Maven Package")
+          
+          -- Build commands (Gradle)
+          map("n", "<leader>jgb", ":!./gradlew build<CR>", "Gradle Build")
+          map("n", "<leader>jgr", ":!./gradlew bootRun<CR>", "Gradle Run")
+          map("n", "<leader>jgt", ":!./gradlew test<CR>", "Gradle Test")
+          map("n", "<leader>jgc", ":!./gradlew clean<CR>", "Gradle Clean")
+          map("n", "<leader>jgk", ":!./gradlew compileKotlin<CR>", "Gradle Compile Kotlin")
+          map("n", "<leader>jgj", ":!./gradlew jar<CR>", "Gradle JAR")
+          
+          -- Spring Boot specific
+          map("n", "<leader>jsb", ":!./gradlew bootRun<CR>", "Spring Boot Run (Gradle)")
+          map("n", "<leader>jsm", ":!mvn spring-boot:run<CR>", "Spring Boot Run (Maven)")
+          map("n", "<leader>jsd", ":!./gradlew bootRun --debug-jvm<CR>", "Spring Boot Debug")
+          map("n", "<leader>jsp", ":!./gradlew bootJar && java -jar build/libs/*.jar<CR>", "Spring Boot Production")
           
           -- DAP keymaps
           map("n", "<F5>", require("dap").continue, "Debug Continue")
@@ -204,13 +264,138 @@ return {
     end,
   },
 
-  -- Optional: Add Java test runner
+  -- Dynamic which-key groups for Java/Kotlin (only show in Java/Kotlin projects)
+  {
+    "folke/which-key.nvim",
+    config = function()
+      -- Function to check if current project is Java/Kotlin
+      local function is_java_kotlin_project()
+        local root = vim.fn.getcwd()
+        local has_java_files = vim.fn.glob(root .. "/**/*.java", false, true)[1] ~= nil
+        local has_kotlin_files = vim.fn.glob(root .. "/**/*.kt", false, true)[1] ~= nil
+        local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
+                          vim.fn.filereadable(root .. "/build.gradle.kts") == 1
+        local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+        
+        return has_java_files or has_kotlin_files or has_gradle or has_maven
+      end
+
+      -- Only register Java/Kotlin which-key groups when in a Java/Kotlin project
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "DirChanged" }, {
+        callback = function()
+          if is_java_kotlin_project() then
+            require("which-key").add({
+              { "<leader>j", group = "[J]ava/Kotlin Development" },
+              { "<leader>jm", group = "[M]aven" },
+              { "<leader>jg", group = "[G]radle" },
+              { "<leader>js", group = "[S]pring Boot" },
+              { "<leader>jp", group = "[P]roject" },
+            })
+          end
+        end,
+      })
+    end,
+  },
+
+  -- Kotlin-specific keymaps and autocommands
+  {
+    "nvim-lua/plenary.nvim",
+    config = function()
+      -- Auto-detect Kotlin projects and set up keybindings
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "kotlin",
+        callback = function(event)
+          local bufnr = event.buf
+          local function map(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
+          end
+
+          -- Kotlin-specific commands
+          map("n", "<leader>jkc", ":!kotlinc % -include-runtime -d %:r.jar<CR>", "Compile Kotlin")
+          map("n", "<leader>jkr", ":!kotlin %:r.jarKt<CR>", "Run Kotlin")
+          map("n", "<leader>jks", ":!kotlinc % && kotlin %:rKt<CR>", "Compile & Run Kotlin Script")
+          
+          -- Gradle Kotlin DSL commands
+          map("n", "<leader>jgkb", ":!./gradlew build<CR>", "Gradle Build (Kotlin)")
+          map("n", "<leader>jgkt", ":!./gradlew test<CR>", "Gradle Test (Kotlin)")
+          map("n", "<leader>jgkr", ":!./gradlew run<CR>", "Gradle Run (Kotlin)")
+        end,
+      })
+
+      -- Auto-detect build system and set appropriate commands
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+        pattern = { "*.java", "*.kt" },
+        callback = function()
+          local root = vim.fn.getcwd()
+          local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
+                           vim.fn.filereadable(root .. "/build.gradle.kts") == 1
+          local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+          
+          if has_gradle then
+            vim.b.build_system = "gradle"
+          elseif has_maven then
+            vim.b.build_system = "maven"
+          end
+        end,
+      })
+    end,
+  },
+
+  -- Optional: Add Java/Kotlin test runner
   {
     "rcasia/neotest-java",
-    ft = "java",
+    ft = { "java", "kotlin" },
     dependencies = {
       "nvim-neotest/neotest",
       "mfussenegger/nvim-jdtls",
     },
+  },
+
+  -- Gradle and Maven file syntax highlighting
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, {
+          "groovy", -- For build.gradle
+          "kotlin", -- For build.gradle.kts
+        })
+      end
+    end,
+  },
+
+  -- Spring Boot development tools (conditional keybindings)
+  {
+    "nvim-lua/plenary.nvim",
+    config = function()
+      -- Function to check if current project is Java/Kotlin/Spring Boot
+      local function is_java_kotlin_project()
+        local root = vim.fn.getcwd()
+        local has_java_files = vim.fn.glob(root .. "/**/*.java", false, true)[1] ~= nil
+        local has_kotlin_files = vim.fn.glob(root .. "/**/*.kt", false, true)[1] ~= nil
+        local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
+                          vim.fn.filereadable(root .. "/build.gradle.kts") == 1
+        local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+        
+        return has_java_files or has_kotlin_files or has_gradle or has_maven
+      end
+
+      -- Set up conditional keybindings
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "DirChanged" }, {
+        callback = function()
+          if is_java_kotlin_project() then
+            -- Quick project commands (only for Java/Kotlin projects)
+            vim.keymap.set("n", "<leader>jpi", "<cmd>!./gradlew dependencies<cr>", { desc = "Show Project Dependencies" })
+            vim.keymap.set("n", "<leader>jpt", "<cmd>!./gradlew tasks<cr>", { desc = "Show Available Tasks" })
+            vim.keymap.set("n", "<leader>jpw", "<cmd>!./gradlew wrapper --gradle-version latest<cr>", { desc = "Update Gradle Wrapper" })
+            
+            -- Spring Boot Actuator endpoints (if running locally)
+            vim.keymap.set("n", "<leader>jsa", "<cmd>!curl -s http://localhost:8080/actuator/health | jq<cr>", { desc = "Check App Health" })
+            vim.keymap.set("n", "<leader>jse", "<cmd>!curl -s http://localhost:8080/actuator/env | jq<cr>", { desc = "Show Environment" })
+            vim.keymap.set("n", "<leader>jsb", "<cmd>!curl -s http://localhost:8080/actuator/beans | jq<cr>", { desc = "Show Beans" })
+          end
+        end,
+      })
+    end,
   },
 }

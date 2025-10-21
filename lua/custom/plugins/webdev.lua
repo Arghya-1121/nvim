@@ -138,45 +138,83 @@ return {
     lazy = true,
   },
 
-  -- Node.js specific keymaps
+  -- Dynamic which-key groups for Node.js/TypeScript (only show in JS/TS projects)
   {
     "folke/which-key.nvim",
-    opts = {
-      spec = {
-        { "<leader>n", group = "[N]ode.js Development" },
-        { "<leader>np", group = "[P]ackage" },
-        { "<leader>nt", group = "[T]ypeScript" },
-      },
-    },
+    config = function()
+      -- Function to check if current project is Node.js/JavaScript/TypeScript
+      local function is_node_js_project()
+        local root = vim.fn.getcwd()
+        local has_package_json = vim.fn.filereadable(root .. "/package.json") == 1
+        local has_tsconfig = vim.fn.filereadable(root .. "/tsconfig.json") == 1
+        local has_js_files = vim.fn.glob(root .. "/**/*.js", false, true)[1] ~= nil
+        local has_ts_files = vim.fn.glob(root .. "/**/*.ts", false, true)[1] ~= nil
+        local has_node_modules = vim.fn.isdirectory(root .. "/node_modules") == 1
+        
+        return has_package_json or has_tsconfig or has_js_files or has_ts_files or has_node_modules
+      end
+
+      -- Only register Node.js/TypeScript which-key groups when in a JS/TS project
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "DirChanged" }, {
+        callback = function()
+          if is_node_js_project() then
+            require("which-key").add({
+              { "<leader>n", group = "[N]ode.js Development" },
+              { "<leader>np", group = "[P]ackage" },
+              { "<leader>nt", group = "[T]ypeScript" },
+            })
+          end
+        end,
+      })
+    end,
   },
 
-  -- Node.js development specific keymaps and commands
+  -- Node.js development specific keymaps and commands (conditional)
   {
     "nvim-lua/plenary.nvim",
-    keys = {
-      -- Package.json commands
-      { "<leader>npu", function() require("package-info").update() end, desc = "Update package", ft = "json" },
-      { "<leader>npd", function() require("package-info").delete() end, desc = "Delete package", ft = "json" },
-      { "<leader>npi", function() require("package-info").install() end, desc = "Install package", ft = "json" },
-      { "<leader>npc", function() require("package-info").change_version() end, desc = "Change package version", ft = "json" },
-      { "<leader>nps", function() require("package-info").show() end, desc = "Show package info", ft = "json" },
+    config = function()
+      -- Function to check if current project is Node.js/JavaScript/TypeScript
+      local function is_node_js_project()
+        local root = vim.fn.getcwd()
+        local has_package_json = vim.fn.filereadable(root .. "/package.json") == 1
+        local has_tsconfig = vim.fn.filereadable(root .. "/tsconfig.json") == 1
+        local has_js_files = vim.fn.glob(root .. "/**/*.js", false, true)[1] ~= nil
+        local has_ts_files = vim.fn.glob(root .. "/**/*.ts", false, true)[1] ~= nil
+        local has_node_modules = vim.fn.isdirectory(root .. "/node_modules") == 1
+        
+        return has_package_json or has_tsconfig or has_js_files or has_ts_files or has_node_modules
+      end
 
-      -- TypeScript specific commands
-      { "<leader>nto", "<cmd>TSToolsOrganizeImports<cr>", desc = "Organize imports", ft = { "typescript", "javascript" } },
-      { "<leader>nts", "<cmd>TSToolsSortImports<cr>", desc = "Sort imports", ft = { "typescript", "javascript" } },
-      { "<leader>ntr", "<cmd>TSToolsRemoveUnused<cr>", desc = "Remove unused imports", ft = { "typescript", "javascript" } },
-      { "<leader>ntf", "<cmd>TSToolsFixAll<cr>", desc = "Fix all issues", ft = { "typescript", "javascript" } },
-      { "<leader>nta", "<cmd>TSToolsAddMissingImports<cr>", desc = "Add missing imports", ft = { "typescript", "javascript" } },
-      { "<leader>ntr", "<cmd>TSToolsRenameFile<cr>", desc = "Rename file", ft = { "typescript", "javascript" } },
+      -- Set up conditional keybindings
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "DirChanged" }, {
+        callback = function()
+          if is_node_js_project() then
+            -- Package.json commands (only for Node.js projects)
+            vim.keymap.set("n", "<leader>npu", function() require("package-info").update() end, { desc = "Update package" })
+            vim.keymap.set("n", "<leader>npd", function() require("package-info").delete() end, { desc = "Delete package" })
+            vim.keymap.set("n", "<leader>npi", function() require("package-info").install() end, { desc = "Install package" })
+            vim.keymap.set("n", "<leader>npc", function() require("package-info").change_version() end, { desc = "Change package version" })
+            vim.keymap.set("n", "<leader>nps", function() require("package-info").show() end, { desc = "Show package info" })
 
-      -- Node.js debugging and running
-      { "<leader>nr", "<cmd>!node %<cr>", desc = "Run current JS file", ft = "javascript" },
-      { "<leader>nt", "<cmd>!npx ts-node %<cr>", desc = "Run current TS file", ft = "typescript" },
-      { "<leader>ni", "<cmd>!npm install<cr>", desc = "Run npm install" },
-      { "<leader>nb", "<cmd>!npm run build<cr>", desc = "Run npm build" },
-      { "<leader>ns", "<cmd>!npm start<cr>", desc = "Run npm start" },
-      { "<leader>nd", "<cmd>!npm run dev<cr>", desc = "Run npm dev" },
-    },
+            -- TypeScript specific commands
+            vim.keymap.set("n", "<leader>nto", "<cmd>TSToolsOrganizeImports<cr>", { desc = "Organize imports" })
+            vim.keymap.set("n", "<leader>nts", "<cmd>TSToolsSortImports<cr>", { desc = "Sort imports" })
+            vim.keymap.set("n", "<leader>ntr", "<cmd>TSToolsRemoveUnused<cr>", { desc = "Remove unused imports" })
+            vim.keymap.set("n", "<leader>ntf", "<cmd>TSToolsFixAll<cr>", { desc = "Fix all issues" })
+            vim.keymap.set("n", "<leader>nta", "<cmd>TSToolsAddMissingImports<cr>", { desc = "Add missing imports" })
+            vim.keymap.set("n", "<leader>ntR", "<cmd>TSToolsRenameFile<cr>", { desc = "Rename file" })
+
+            -- Node.js debugging and running
+            vim.keymap.set("n", "<leader>nr", "<cmd>!node %<cr>", { desc = "Run current JS file" })
+            vim.keymap.set("n", "<leader>nt", "<cmd>!npx ts-node %<cr>", { desc = "Run current TS file" })
+            vim.keymap.set("n", "<leader>ni", "<cmd>!npm install<cr>", { desc = "Run npm install" })
+            vim.keymap.set("n", "<leader>nb", "<cmd>!npm run build<cr>", { desc = "Run npm build" })
+            vim.keymap.set("n", "<leader>ns", "<cmd>!npm start<cr>", { desc = "Run npm start" })
+            vim.keymap.set("n", "<leader>nd", "<cmd>!npm run dev<cr>", { desc = "Run npm dev" })
+          end
+        end,
+      })
+    end,
   },
 
   -- Better JSON support
