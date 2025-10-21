@@ -694,23 +694,6 @@ require('lazy').setup({
     },
   },
 
-  {
-    'folke/tokyonight.nvim',
-    priority = 1000,
-    opts = {
-      transparent = true,
-      styles = {
-        sidebars = 'transparent',
-        floats = 'transparent',
-        comments = { italic = true },
-      },
-    },
-    config = function(_, opts)
-      require('tokyonight').setup(opts)
-      vim.cmd.colorscheme 'tokyonight-night'
-    end,
-  },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -787,6 +770,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
+  require 'kickstart.plugins.colorscheme',
   require 'kickstart.plugins.telescope',
   require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
