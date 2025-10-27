@@ -270,14 +270,18 @@ return {
     config = function()
       -- Function to check if current project is Java/Kotlin
       local function is_java_kotlin_project()
-        local root = vim.fn.getcwd()
-        local has_java_files = vim.fn.glob(root .. "/**/*.java", false, true)[1] ~= nil
-        local has_kotlin_files = vim.fn.glob(root .. "/**/*.kt", false, true)[1] ~= nil
-        local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
-                          vim.fn.filereadable(root .. "/build.gradle.kts") == 1
-        local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+        local ok, result = pcall(function()
+          local root = vim.fn.getcwd()
+          local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
+                            vim.fn.filereadable(root .. "/build.gradle.kts") == 1
+          local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+          local has_src_main_java = vim.fn.isdirectory(root .. "/src/main/java") == 1
+          local has_src_main_kotlin = vim.fn.isdirectory(root .. "/src/main/kotlin") == 1
+          
+          return has_gradle or has_maven or has_src_main_java or has_src_main_kotlin
+        end)
         
-        return has_java_files or has_kotlin_files or has_gradle or has_maven
+        return ok and result or false
       end
 
       -- Only register Java/Kotlin which-key groups when in a Java/Kotlin project
@@ -370,14 +374,18 @@ return {
     config = function()
       -- Function to check if current project is Java/Kotlin/Spring Boot
       local function is_java_kotlin_project()
-        local root = vim.fn.getcwd()
-        local has_java_files = vim.fn.glob(root .. "/**/*.java", false, true)[1] ~= nil
-        local has_kotlin_files = vim.fn.glob(root .. "/**/*.kt", false, true)[1] ~= nil
-        local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
-                          vim.fn.filereadable(root .. "/build.gradle.kts") == 1
-        local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+        local ok, result = pcall(function()
+          local root = vim.fn.getcwd()
+          local has_gradle = vim.fn.filereadable(root .. "/build.gradle") == 1 or 
+                            vim.fn.filereadable(root .. "/build.gradle.kts") == 1
+          local has_maven = vim.fn.filereadable(root .. "/pom.xml") == 1
+          local has_src_main_java = vim.fn.isdirectory(root .. "/src/main/java") == 1
+          local has_src_main_kotlin = vim.fn.isdirectory(root .. "/src/main/kotlin") == 1
+          
+          return has_gradle or has_maven or has_src_main_java or has_src_main_kotlin
+        end)
         
-        return has_java_files or has_kotlin_files or has_gradle or has_maven
+        return ok and result or false
       end
 
       -- Set up conditional keybindings
