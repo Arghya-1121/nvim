@@ -69,6 +69,23 @@ return {
     config = function(_, opts)
       require("render-markdown").setup(opts)
       
+      -- Automatically toggle render mode and diagnostics
+      vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+        pattern = { "*.md", "*.markdown" },
+        callback = function()
+          vim.cmd("RenderMarkdown enable")
+          vim.diagnostic.disable()
+        end,
+      })
+      
+      vim.api.nvim_create_autocmd("InsertEnter", {
+        pattern = { "*.md", "*.markdown" },
+        callback = function()
+          vim.cmd("RenderMarkdown disable")
+          vim.diagnostic.enable()
+        end,
+      })
+
       -- Keymaps for markdown
       vim.keymap.set("n", "<leader>mt", ":RenderMarkdown toggle<CR>", { desc = "Toggle Markdown Render" })
       vim.keymap.set("n", "<leader>me", ":RenderMarkdown enable<CR>", { desc = "Enable Markdown Render" })
