@@ -180,22 +180,8 @@ return {
       end,
     })
 
-    -- onefetch header for alpha dashboard if onefetch is installed and git repo is present
-    vim.api.nvim_create_augroup('vimrc_alpha', { clear = true })
-    vim.api.nvim_create_autocmd({ 'User' }, {
-      group = 'vimrc_alpha',
-      pattern = 'AlphaReady',
-      callback = function()
-        if vim.fn.executable 'onefetch' == 1 then
-          local header =
-            split(capture([[onefetch 2>/dev/null | sed 's/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;<=>?]*[-!"#$%&'"'"'()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g']], true), '\n')
-          if next(header) ~= nil then
-            require('alpha.themes.dashboard').section.header.val = header
-            require('alpha').redraw()
-          end
-        end
-      end,
-      once = true,
-    })
+    dashboard.section.footer.opts.hl = 'Type'
+    dashboard.section.header.opts.hl = 'Include'
+    dashboard.section.buttons.opts.hl = 'Keyword'
   end,
 }
