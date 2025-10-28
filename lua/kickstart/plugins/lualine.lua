@@ -47,6 +47,7 @@ return {
           lualine_c = {
             { 'filetype', icon_only = true, separator = '' },
             { 'filename', path = 1 },
+            'modified',
           },
           lualine_x = { get_lsp_name, 'encoding' },
           lualine_y = { { 'progress', separator = '' }, 'location' },
