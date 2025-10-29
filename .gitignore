@@ -1,3 +1,5 @@
+.idea/
+.vscode/
 tags
 test.sh
 .luarc.json
