@@ -24,17 +24,23 @@ let mapleader = " "
 nnoremap <A-n> :tabnext<CR>
 nnoremap <A-p> :tabprev<CR>\
 
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-nnoremap <C-k> <C-w>k
-nnoremap <C-j> <C-w>j
+" Navigation between UI elements (splits, file tree, etc.)
+nnoremap <C-h> <Action>(PrevSplitter)
+nnoremap <C-l> <Action>(NextSplitter)
+nnoremap <C-k> <Action>(PrevSplitter)
+nnoremap <C-j> <Action>(NextSplitter)
 
 map <leader>e :NERDTreeToggle<CR>
 map <leader>vs <Action>(SplitVertically)
 map <leader>hs <Action>(SplitHorizontally)
 map <leader>wc <Action>(Unsplit)
-map <leader>/ <action>(SearchEverywhere)
-map <leader><space> <action>(GotoFile)
+
+" New keybindings
+map <leader><leader> <action>(GotoFile)
+map <leader>/ <action>(FindInPath)
+map <C-1> <Action>(SplitVertically)
+map <C-2> <Action>(SplitHorizontally)
+map <C-/> <Action>(ActivateTerminalToolWindow)
 map <leader>n <action>(NewScratchFile)
 map <leader>q <action>(CloseContent)
 nmap <leader>gd <Action>(GotoDeclaration)
