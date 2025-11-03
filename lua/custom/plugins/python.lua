@@ -13,10 +13,10 @@ local function is_python_project()
     local has_pipfile = vim.fn.filereadable(root .. '/Pipfile') == 1
     local has_poetry = vim.fn.filereadable(root .. '/poetry.lock') == 1
     local has_venv = vim.fn.isdirectory(root .. '/venv') == 1 or vim.fn.isdirectory(root .. '/.venv') == 1
-    
+
     return has_requirements or has_pyproject or has_setup_py or has_pipfile or has_poetry or has_venv
   end)
-  
+
   return ok and result or false
 end
 
@@ -28,7 +28,6 @@ return {
     'neovim/nvim-lspconfig',
     opts = function(_, opts)
       opts.servers = opts.servers or {}
-      
       -- Python LSP Server (pylsp)
       opts.servers.pylsp = {
         settings = {
@@ -62,7 +61,6 @@ return {
           },
         },
       }
-      
       return opts
     end,
   },
@@ -116,10 +114,8 @@ return {
     config = function()
       local dap = require 'dap'
       local dap_python = require 'dap-python'
-      
       -- Setup debugpy
-      dap_python.setup('python3')
-      
+      dap_python.setup 'python3'
       -- Python debug configurations
       dap.configurations.python = {
         {
@@ -145,7 +141,7 @@ return {
           name = 'Launch file with arguments',
           program = '${file}',
           args = function()
-            local args_string = vim.fn.input('Arguments: ')
+            local args_string = vim.fn.input 'Arguments: '
             return vim.split(args_string, ' +')
           end,
           pythonPath = function()
@@ -396,8 +392,18 @@ return {
             map('n', '<leader>ptr', '<cmd>lua require("neotest").run.run()<cr>', vim.tbl_extend('force', opts, { desc = 'Run nearest test' }))
             map('n', '<leader>ptf', '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>', vim.tbl_extend('force', opts, { desc = 'Run file tests' }))
             map('n', '<leader>pts', '<cmd>lua require("neotest").summary.toggle()<cr>', vim.tbl_extend('force', opts, { desc = 'Toggle test summary' }))
-            map('n', '<leader>pto', '<cmd>lua require("neotest").output.open({ enter = true })<cr>', vim.tbl_extend('force', opts, { desc = 'Show test output' }))
-            map('n', '<leader>ptd', '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>', vim.tbl_extend('force', opts, { desc = 'Debug nearest test' }))
+            map(
+              'n',
+              '<leader>pto',
+              '<cmd>lua require("neotest").output.open({ enter = true })<cr>',
+              vim.tbl_extend('force', opts, { desc = 'Show test output' })
+            )
+            map(
+              'n',
+              '<leader>ptd',
+              '<cmd>lua require("neotest").run.run({strategy = "dap"})<cr>',
+              vim.tbl_extend('force', opts, { desc = 'Debug nearest test' })
+            )
 
             -- Virtual Environment
             map('n', '<leader>pv', '<cmd>VenvSelect<cr>', vim.tbl_extend('force', opts, { desc = 'Select venv' }))
