@@ -18,7 +18,7 @@ vim.g.have_nerd_font = true
 -- Make line numbers default
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.mouse = 'n'
+-- vim.o.mouse = 'n'
 
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
@@ -788,6 +788,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.colorscheme',
+  require 'kickstart.plugins.animation',
   require 'kickstart.plugins.telescope',
   require 'kickstart.plugins.dashboard',
   require 'kickstart.plugins.debug',
