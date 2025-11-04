@@ -58,6 +58,8 @@ return {
           default_settings = {
             ['rust-analyzer'] = {
               cargo = {
+                autoimport = true,
+                autoreload = true,
                 allFeatures = true,
                 loadOutDirsFromCheck = true,
                 runBuildScripts = true,
@@ -168,4 +170,3 @@ return {
     end,
   },
 }
-
