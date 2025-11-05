@@ -788,7 +788,6 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.colorscheme',
-  require 'kickstart.plugins.animation',
   require 'kickstart.plugins.telescope',
   require 'kickstart.plugins.dashboard',
   require 'kickstart.plugins.debug',
