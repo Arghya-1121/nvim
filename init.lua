@@ -19,6 +19,12 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 vim.o.relativenumber = true
 -- vim.o.mouse = 'n'
+--
+-- Set tab width to 4 spaces
+vim.opt.tabstop = 4 -- Number of visual spaces per tab.
+vim.opt.softtabstop = 4 -- Number of spaces inserted when tab is pressed.
+vim.opt.shiftwidth = 4 -- Number of spaces to use for auto-indent.
+vim.opt.expandtab = true -- Use spaces instead of tabs.
 
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
