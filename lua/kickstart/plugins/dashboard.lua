@@ -21,32 +21,32 @@ return {
       val = {
         {
           type = 'text',
-          val = '███╗   ███╗██╗   ██╗███╗   ███╗██╗   ██╗',
+          val = '███╗   ███╗ ██╗   ██╗ ███╗   ███╗ ██╗   ██╗',
           opts = { hl = 'HeaderRed', position = 'center' },
         },
         {
           type = 'text',
-          val = '████╗ ████║██║   ██║████╗ ████║██║   ██║',
+          val = '████╗ ████║ ██║   ██║ ████╗ ████║ ██║   ██║',
           opts = { hl = 'HeaderOrange', position = 'center' },
         },
         {
           type = 'text',
-          val = '██╔████╔██║██║   ██║██╔████╔██║██║   ██║',
+          val = '██╔████╔██║ ██║   ██║ ██╔████╔██║ ██║   ██║',
           opts = { hl = 'HeaderYellow', position = 'center' },
         },
         {
           type = 'text',
-          val = '██║╚██╔╝██║██║   ██║██║╚██╔╝██║██║   ██║',
+          val = '██║╚██╔╝██║ ██║   ██║ ██║╚██╔╝██║ ██║   ██║',
           opts = { hl = 'HeaderGreen', position = 'center' },
         },
         {
           type = 'text',
-          val = '██║ ╚═╝ ██║╚██████╔╝██║ ╚═╝ ██║╚██████╔╝',
+          val = '██║ ╚═╝ ██║ ╚██████╔╝ ██║ ╚═╝ ██║ ╚██████╔╝',
           opts = { hl = 'HeaderCyan', position = 'center' },
         },
         {
           type = 'text',
-          val = '╚═╝     ╚═╝ ╚═════╝ ╚═╝     ╚═╝ ╚═════╝ ',
+          val = '╚═╝     ╚═╝  ╚═════╝  ╚═╝     ╚═╝  ╚═════╝ ',
           opts = { hl = 'HeaderMagenta', position = 'center' },
         },
         { type = 'text', val = '↬I use NeoVim btw↫', opts = { hl = 'Text', position = 'center' } },
