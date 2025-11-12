@@ -14,6 +14,7 @@ return {
     vim.api.nvim_set_hl(0, 'HeaderCyan', { fg = '#5affff' })
     vim.api.nvim_set_hl(0, 'HeaderMagenta', { fg = '#ff5aff' })
     vim.api.nvim_set_hl(0, 'Text', { fg = '#ffffff' })
+    vim.api.nvim_set_hl(0, 'CustomText', { fg = '#5a9fff', italic = true })
 
     -- Build a custom layout instead of dashboard.section.header
     local colorful_header = {
@@ -49,7 +50,8 @@ return {
           val = '╚═╝     ╚═╝  ╚═════╝  ╚═╝     ╚═╝  ╚═════╝ ',
           opts = { hl = 'HeaderMagenta', position = 'center' },
         },
-        { type = 'text', val = '↬I use NeoVim btw↫', opts = { hl = 'Text', position = 'center' } },
+        { type = 'padding', val = 1 },
+        { type = 'text', val = '↬I use NeoVim btw↫', opts = { hl = 'CustomText', position = 'center' } },
       },
     }
 
