@@ -74,7 +74,7 @@ return {
         pattern = { "*.md", "*.markdown" },
         callback = function()
           vim.cmd("RenderMarkdown enable")
-          vim.diagnostic.disable()
+          vim.diagnostic.enable(false)
         end,
       })
       
@@ -82,7 +82,7 @@ return {
         pattern = { "*.md", "*.markdown" },
         callback = function()
           vim.cmd("RenderMarkdown disable")
-          vim.diagnostic.enable()
+          vim.diagnostic.enable(true)
         end,
       })
 

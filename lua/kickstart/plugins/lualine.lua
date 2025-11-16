@@ -14,7 +14,7 @@ return {
     end,
     opts = function()
       local function get_lsp_name()
-        local clients = vim.lsp.get_active_clients { bufnr = 0 }
+        local clients = vim.lsp.get_clients { bufnr = 0 }
         if #clients > 0 then
           return clients[1].name
         else
