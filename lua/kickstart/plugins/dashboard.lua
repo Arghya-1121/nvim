@@ -65,7 +65,6 @@ return {
       text = '',
     }
 
-    local datetime = tonumber(os.date ' %H ')
     local stats = require('lazy').stats()
     local total_plugins = stats.count
 
@@ -87,35 +86,13 @@ return {
       button('q', custom_icons.close .. ' Quit NVIM', ':qa<CR>'),
     }
 
-    -- 🕓 Footer and Greeting
+    -- 🕓 Footer
     local function footer()
-      local footer_datetime = os.date '  %m-%d-%Y   %H:%M:%S'
       local version = vim.version()
       local nvim_version_info = '   v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
-      local value = footer_datetime .. '   Plugins ' .. total_plugins .. nvim_version_info
+      local value = ' Plugins ' .. total_plugins .. nvim_version_info
       return value
     end
-
-    local function greeting()
-      local username = os.getenv 'USERNAME' or os.getenv 'USER' or 'Developer'
-      if datetime >= 0 and datetime < 6 then
-        return 'Dreaming..󰒲 󰒲 '
-      elseif datetime >= 6 and datetime < 12 then
-        return '🌅 Hi ' .. username .. ', Good Morning ☀️'
-      elseif datetime >= 12 and datetime < 18 then
-        return '🌞 Hi ' .. username .. ', Good Afternoon ☕️'
-      elseif datetime >= 18 and datetime < 21 then
-        return '🌆 Hi ' .. username .. ', Good Evening 🌙'
-      else
-        return 'Hi ' .. username .. ', it’s getting late, get some sleep 😴'
-      end
-    end
-
-    local bottom_section = {
-      type = 'text',
-      val = greeting,
-      opts = { position = 'center' },
-    }
 
     local footer_section = {
       type = 'text',
