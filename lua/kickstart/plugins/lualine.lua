@@ -49,13 +49,13 @@ return {
             { 'filename', path = 1 },
             'modified',
           },
-          lualine_x = { 
+          lualine_x = {
             function()
-              local buffers = vim.fn.len(vim.fn.filter(vim.fn.range(1, vim.fn.bufnr('$')), 'buflisted(v:val)'))
-              return '📂 ' .. buffers
+              local buffers = vim.fn.len(vim.fn.filter(vim.fn.range(1, vim.fn.bufnr '$'), 'buflisted(v:val)'))
+              return '📂' .. buffers
             end,
-            get_lsp_name, 
-            'encoding' 
+            get_lsp_name,
+            'encoding',
           },
           lualine_y = { { 'progress', separator = '' }, 'location' },
           lualine_z = {
