@@ -124,7 +124,7 @@ return {
         require('dap').step_out()
       end, { desc = 'Step Out whiel debugging' })
 
-      vim.keymap.set('n', '<leader>db', function()
+      vim.keymap.set('n', '<leader>b', function()
         require('dap').toggle_breakpoint()
       end, { desc = 'Toggle Breakpoint' })
     end,
