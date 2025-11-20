@@ -43,11 +43,15 @@ return {
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_b = {
+            { 'branch', color = { bg = '#2c323c' } },
+          },
           lualine_c = {
-            { 'filetype', icon_only = true, separator = '' },
-            { 'filename', path = 1 },
-            'modified',
+            'diff',
+            'diagnostics',
+            { 'filetype', icon_only = true },
+            { 'filename', path = 1, separator = '' },
+            { 'modified', separator = '' },
           },
           lualine_x = {
             function()
@@ -57,41 +61,46 @@ return {
             get_lsp_name,
             'encoding',
           },
-          lualine_y = { { 'progress', separator = '' }, 'location' },
+          lualine_y = {
+            { 'progress', color = { bg = '#2c323c' } },
+            { 'location', color = { bg = '#2c323c' } },
+          },
           lualine_z = {
-            -- Code Stats
-            function()
-              local buf_lines = vim.api.nvim_buf_line_count(0)
-              local file_size = vim.fn.getfsize(vim.fn.expand '%')
+            {
+              function()
+                local buf_lines = vim.api.nvim_buf_line_count(0)
+                local file_size = vim.fn.getfsize(vim.fn.expand '%')
 
-              -- Count TODOs/FIXMEs in current buffer
-              local todo_count = 0
-              local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-              for _, line in ipairs(lines) do
-                if line:match 'TODO' or line:match 'FIXME' or line:match 'HACK' or line:match 'NOTE' then
-                  todo_count = todo_count + 1
+                -- Count TODOs/FIXMEs in current buffer
+                local todo_count = 0
+                local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+                for _, line in ipairs(lines) do
+                  if line:match 'TODO' or line:match 'FIXME' or line:match 'HACK' or line:match 'NOTE' then
+                    todo_count = todo_count + 1
+                  end
                 end
-              end
 
-              local size_str = ''
-              if file_size > 1024 * 1024 then
-                size_str = string.format('%.1fMB', file_size / (1024 * 1024))
-              elseif file_size > 1024 then
-                size_str = string.format('%.1fKB', file_size / 1024)
-              else
-                size_str = file_size .. 'B'
-              end
+                local size_str = ''
+                if file_size > 1024 * 1024 then
+                  size_str = string.format('%.1fMB', file_size / (1024 * 1024))
+                elseif file_size > 1024 then
+                  size_str = string.format('%.1fKB', file_size / 1024)
+                else
+                  size_str = file_size .. 'B'
+                end
 
-              local stats = '📄' .. buf_lines
-              if file_size > 0 then
-                stats = stats .. ' 💾' .. size_str
-              end
-              if todo_count > 0 then
-                stats = stats .. ' 📝' .. todo_count
-              end
+                local stats = '📄' .. buf_lines
+                if file_size > 0 then
+                  stats = stats .. ' 💾' .. size_str
+                end
+                if todo_count > 0 then
+                  stats = stats .. ' 📝' .. todo_count
+                end
 
-              return stats
-            end,
+                return stats
+              end,
+              color = { bg = '#0a101a' },
+            },
           },
         },
         -- inactive_sections = {
