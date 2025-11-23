@@ -1,5 +1,6 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
+  cmd = 'Neotree',
   version = '*',
   dependencies = {
     'nvim-lua/plenary.nvim',
