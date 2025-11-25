@@ -15,11 +15,12 @@ return {
     opts = function()
       local function get_lsp_name()
         local clients = vim.lsp.get_clients { bufnr = 0 }
-        if #clients > 0 then
-          return clients[1].name
-        else
-          return 'No LSP'
+        for _, client in ipairs(clients) do
+          if client.name ~= 'copilot' then
+            return client.name
+          end
         end
+        return 'No LSP'
       end
 
       return {
