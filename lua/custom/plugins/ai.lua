@@ -2,7 +2,7 @@ return {
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
-    event = 'VeryLazy',
+    event = 'InsertEnter',
     config = function()
       require('copilot').setup {
         suggestion = { enabled = false },
@@ -17,6 +17,47 @@ return {
       { 'zbirenbaum/copilot.lua' },
       { 'nvim-lua/plenary.nvim' },
     },
+
+    keys = {
+      {
+        '<leader>ai',
+        function()
+          require('CopilotChat').toggle()
+        end,
+        desc = 'Toggle AI panel',
+      },
+      {
+        '<leader>ae',
+        function()
+          require('CopilotChat').ask('Explain this', { selection = true })
+        end,
+        mode = 'v',
+        desc = 'Explain selection',
+      },
+      {
+        '<leader>af',
+        function()
+          require('CopilotChat').ask('Fix this', { selection = true })
+        end,
+        mode = 'v',
+        desc = 'Fix selection',
+      },
+      {
+        '<leader>ax',
+        function()
+          require('CopilotChat').reset()
+        end,
+        desc = 'Reset chat',
+      },
+      {
+        '<leader>am',
+        function()
+          require('CopilotChat').select_model()
+        end,
+        desc = 'Select model',
+      },
+    },
+
     config = function()
       require('CopilotChat').setup {
         window = {
@@ -27,19 +68,6 @@ return {
           height = 0.85,
         },
       }
-      -- keymaps
-      vim.keymap.set('n', '<leader>ai', function()
-        require('CopilotChat').toggle()
-      end, { desc = 'Toggle AI panel' })
-      vim.keymap.set('v', '<leader>ae', function()
-        require('CopilotChat').ask('Explain this', { selection = true })
-      end, { desc = 'Explain some piece of code' })
-      vim.keymap.set('n', '<leader>ax', function()
-        require('CopilotChat').reset()
-      end, { desc = 'Reset copilot chat' })
-      vim.keymap.set('n', '<leader>am', function()
-        require('CopilotChat').select_model()
-      end, { desc = 'Select model' })
     end,
   },
 }

@@ -1,6 +1,7 @@
 return {
   {
     'kristijanhusak/vim-dadbod-ui',
+    event = 'VeryLazy',
     dependencies = {
       'tpope/vim-dadbod',
       'kristijanhusak/vim-dadbod-completion',
