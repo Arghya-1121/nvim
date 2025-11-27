@@ -1,130 +1,43 @@
 return {
-  'goolord/alpha-nvim',
-  priority = 2000,
-  lazy = false,
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  'echasnovski/mini.starter',
+  version = false,
   config = function()
-    local alpha = require 'alpha'
-    local dashboard = require 'alpha.themes.dashboard'
+    local starter = require 'mini.starter'
 
-    vim.api.nvim_set_hl(0, 'HeaderRed', { fg = '#ff5a5a' })
-    vim.api.nvim_set_hl(0, 'HeaderOrange', { fg = '#ff9a3c' })
-    vim.api.nvim_set_hl(0, 'HeaderYellow', { fg = '#ffd75a' })
-    vim.api.nvim_set_hl(0, 'HeaderGreen', { fg = '#5aff5a' })
-    vim.api.nvim_set_hl(0, 'HeaderCyan', { fg = '#5affff' })
-    vim.api.nvim_set_hl(0, 'HeaderMagenta', { fg = '#ff5aff' })
-    vim.api.nvim_set_hl(0, 'Text', { fg = '#ffffff' })
-    vim.api.nvim_set_hl(0, 'CustomText', { fg = '#5a9fff', italic = true })
+    starter.setup {
+      header = [[
+███╗   ███╗ ██╗   ██╗ ███╗   ███╗ ██╗   ██╗
+████╗ ████║ ██║   ██║ ████╗ ████║ ██║   ██║
+██╔████╔██║ ██║   ██║ ██╔████╔██║ ██║   ██║
+██║╚██╔╝██║ ██║   ██║ ██║╚██╔╝██║ ██║   ██║
+██║ ╚═╝ ██║ ╚██████╔╝ ██║ ╚═╝ ██║ ╚██████╔╝
+╚═╝     ╚═╝  ╚═════╝  ╚═╝     ╚═╝  ╚═════╝
+        ]],
 
-    -- Build a custom layout instead of dashboard.section.header
-    local colorful_header = {
-      type = 'group',
-      val = {
-        {
-          type = 'text',
-          val = '███╗   ███╗ ██╗   ██╗ ███╗   ███╗ ██╗   ██╗',
-          opts = { hl = 'HeaderRed', position = 'center' },
-        },
-        {
-          type = 'text',
-          val = '████╗ ████║ ██║   ██║ ████╗ ████║ ██║   ██║',
-          opts = { hl = 'HeaderOrange', position = 'center' },
-        },
-        {
-          type = 'text',
-          val = '██╔████╔██║ ██║   ██║ ██╔████╔██║ ██║   ██║',
-          opts = { hl = 'HeaderYellow', position = 'center' },
-        },
-        {
-          type = 'text',
-          val = '██║╚██╔╝██║ ██║   ██║ ██║╚██╔╝██║ ██║   ██║',
-          opts = { hl = 'HeaderGreen', position = 'center' },
-        },
-        {
-          type = 'text',
-          val = '██║ ╚═╝ ██║ ╚██████╔╝ ██║ ╚═╝ ██║ ╚██████╔╝',
-          opts = { hl = 'HeaderCyan', position = 'center' },
-        },
-        {
-          type = 'text',
-          val = '╚═╝     ╚═╝  ╚═════╝  ╚═╝     ╚═╝  ╚═════╝ ',
-          opts = { hl = 'HeaderMagenta', position = 'center' },
-        },
-        { type = 'padding', val = 1 },
-        { type = 'text', val = '↬I use NeoVim btw↫', opts = { hl = 'CustomText', position = 'center' } },
+      items = {
+        starter.sections.builtin_actions(),
+        { name = 'Find Files', action = 'Telescope find_files', section = 'Telescope' },
+        { name = 'Find text', action = 'Telescope live_grep', section = 'Telescope' },
+        { name = 'Recent Files', action = 'Telescope oldfiles', section = 'Telescope' },
+        { name = 'Projects', action = 'Telescope projects', section = 'Telescope' },
+        { name = 'Neotree', action = 'Neotree', section = 'Others' },
+        { name = 'Git', action = 'LazyGit', section = 'Others' },
+        { name = 'Lazy', action = 'Lazy', section = 'Plugins' },
+        { name = 'Lazy Health', action = 'Lazy health', section = 'Plugins' },
+        { name = 'Lazy Profile', action = 'Lazy profile', section = 'Plugins' },
+        { name = 'Lazy Update', action = 'Lazy update', section = 'Plugins' },
+        { name = 'Lazy Clean', action = 'Lazy clean', section = 'Plugins' },
+        { name = 'Neovim Config', action = 'e ~/.config/nvim/ | cd %:p:h', section = 'Settings' },
+        { name = 'Hyprland Config', action = 'e ~/.config/hypr/ | cd %:p:h', section = 'Settings' },
+      },
+
+      footer = '  I use Neovim btw',
+
+      content_hooks = {
+        starter.gen_hook.aligning('center', 'center'),
+        -- starter.gen_hook.padding(10, 0),
+        starter.gen_hook.adding_bullet(),
       },
     }
-
-    -- 🔧 Custom icons
-    local custom_icons = {
-      new_file = '',
-      files = '',
-      repo = '',
-      restore = '',
-      close = '',
-      text = '',
-    }
-
-    local stats = require('lazy').stats()
-    local total_plugins = stats.count
-
-    -- 🧭 Dashboard buttons
-    local function button(sc, txt, keybind, keybind_opts)
-      local b = dashboard.button(sc, txt, keybind, keybind_opts)
-      b.opts.hl_shortcut = 'Number'
-      return b
-    end
-
-    dashboard.section.buttons.val = {
-      button('e', custom_icons.new_file .. ' New file', ':ene <BAR> startinsert <CR>'),
-      button('f', custom_icons.files .. ' Find Files', ':Telescope find_files <CR>'),
-      button('p', custom_icons.repo .. ' Find project', "<cmd>lua require('telescope').extensions.projects.projects()<cr>"),
-      button('o', custom_icons.restore .. ' Recent Files', '<cmd>Telescope oldfiles<cr>'),
-      button('t', custom_icons.text .. ' Find text', ':Telescope live_grep <CR>'),
-      button('c', ' ' .. ' Neovim config', '<cmd>e ~/.config/nvim/ | cd %:p:h<cr>'),
-      button('l', '󰒲 Lazy', '<cmd>Lazy<cr>'),
-      button('q', custom_icons.close .. ' Quit NVIM', ':qa<CR>'),
-    }
-
-    -- 🕓 Footer
-    local function footer()
-      local version = vim.version()
-      local nvim_version_info = '   v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
-      local value = ' Plugins ' .. total_plugins .. nvim_version_info
-      return value
-    end
-
-    local footer_section = {
-      type = 'text',
-      val = footer(),
-      opts = { position = 'center', hl = 'Type' },
-    }
-
-    -- 🧩 Final layout
-    local opts = {
-      layout = {
-        { type = 'padding', val = 12 },
-        colorful_header,
-        { type = 'padding', val = 3 },
-        dashboard.section.buttons,
-        { type = 'padding', val = 1 },
-        bottom_section,
-        { type = 'padding', val = 1 },
-        footer_section,
-      },
-    }
-
-    alpha.setup(opts)
-
-    -- 🪄 Hide status line while in dashboard
-    vim.api.nvim_create_autocmd('User', {
-      pattern = 'AlphaReady',
-      callback = function()
-        vim.cmd [[ set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3 ]]
-      end,
-    })
-
-    -- Button highlights
-    dashboard.section.buttons.opts.hl = 'Keyword'
   end,
 }

@@ -55,10 +55,12 @@ return {
             { 'modified', separator = '' },
           },
           lualine_x = {
+
             function()
-              local buffers = vim.fn.len(vim.fn.filter(vim.fn.range(1, vim.fn.bufnr '$'), 'buflisted(v:val)'))
-              return '📂' .. buffers
+              local count = #vim.fn.getbufinfo { buflisted = 1 }
+              return '📂' .. count
             end,
+
             get_lsp_name,
             'encoding',
           },
