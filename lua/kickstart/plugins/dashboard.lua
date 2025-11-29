@@ -27,8 +27,6 @@ return {
         { name = 'Lazy Profile', action = 'Lazy profile', section = 'Plugins' },
         { name = 'Lazy Update', action = 'Lazy update', section = 'Plugins' },
         { name = 'Lazy Clean', action = 'Lazy clean', section = 'Plugins' },
-        { name = 'Neovim Config', action = 'e ~/.config/nvim/ | cd %:p:h', section = 'Settings' },
-        { name = 'Hyprland Config', action = 'e ~/.config/hypr/ | cd %:p:h', section = 'Settings' },
       },
 
       footer = '  I use Neovim btw',

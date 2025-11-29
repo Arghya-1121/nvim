@@ -45,12 +45,13 @@ return {
 
             map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code Action')
 
-            map('n', '<leader>cb', ':!cargo build<CR>', 'Cargo Build')
-            map('n', '<leader>ct', ':!cargo test<CR>', 'Cargo Test')
-            map('n', '<leader>cc', ':!cargo check<CR>', 'Cargo Check')
-            map('n', '<leader>cl', ':!cargo clippy<CR>', 'Cargo Clippy')
-            map('n', '<leader>cu', ':!cargo update<CR>', 'Cargo Update')
-            map('n', '<leader>cd', ':!cargo doc --open<CR>', 'Cargo Doc')
+            map('n', '<leader>cb', ':Cargo build<CR>', 'Cargo Build')
+            map('n', '<F5>', ':Cargo run<CR>', 'Cargo Run')
+            map('n', '<leader>ct', ':Cargo test<CR>', 'Cargo Test')
+            map('n', '<leader>cc', ':Cargo check<CR>', 'Cargo Check')
+            map('n', '<leader>cl', ':Cargo clippy<CR>', 'Cargo Clippy')
+            map('n', '<leader>cu', ':Cargo update<CR>', 'Cargo Update')
+            map('n', '<leader>cd', ':Cargo doc --open<CR>', 'Cargo Doc')
 
             -- Enable inlay hints by default
             vim.lsp.inlay_hint.enable(true)

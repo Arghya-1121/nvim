@@ -1,3 +1,40 @@
+local lualine_stats = { stats = '' }
+
+function lualine_stats.update_stats()
+  local buf_lines = vim.api.nvim_buf_line_count(0)
+  local file_size = vim.fn.getfsize(vim.fn.expand '%')
+  local todo_count = 0
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  for _, line in ipairs(lines) do
+    if line:match 'TODO' or line:match 'FIXME' or line:match 'HACK' or line:match 'NOTE' or line:match 'WARN' then
+      todo_count = todo_count + 1
+    end
+  end
+  local size_str = ''
+  if file_size > 1024 * 1024 then
+    size_str = string.format('%.1fMB', file_size / (1024 * 1024))
+  elseif file_size > 1024 then
+    size_str = string.format('%.1fKB', file_size / 1024)
+  else
+    size_str = file_size .. 'B'
+  end
+
+  local stats = '📄' .. buf_lines
+  if file_size > 0 then
+    stats = stats .. ' 💾' .. size_str
+  end
+  if todo_count > 0 then
+    stats = stats .. ' 📝' .. todo_count
+  end
+  lualine_stats.stats = stats
+end
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
+  callback = function()
+    lualine_stats.update_stats()
+  end,
+})
+
 return {
   {
     'nvim-lualine/lualine.nvim',
@@ -13,27 +50,15 @@ return {
       end
     end,
     opts = function()
-      local function get_lsp_name()
-        local clients = vim.lsp.get_clients { bufnr = 0 }
-        for _, client in ipairs(clients) do
-          if client.name ~= 'copilot' then
-            return client.name
-          end
-        end
-        return 'No LSP'
-      end
-
       return {
         options = {
           icons_enabled = true,
           theme = 'auto',
-          component_separators = { left = '', right = '' },
-          section_separators = { left = '', right = '' },
           disabled_filetypes = {
             statusline = { 'dashboard', 'alpha', 'ministarter', 'snacks_dashboard' },
             winbar = {},
           },
-          ignore_focus = {},
+          ignore_focus = { 'neo-tree' },
           always_divide_middle = true,
           globalstatus = true,
           -- refresh = {
@@ -44,25 +69,32 @@ return {
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = {
-            { 'branch', color = { bg = '#2c323c' } },
-          },
+          lualine_b = { { 'branch', color = { bg = '#2c323c' } } },
           lualine_c = {
-            'diff',
-            'diagnostics',
+            { 'diff' },
+            { 'diagnostics', update_in_insert = true },
             { 'filetype', icon_only = true },
             { 'filename', path = 1, separator = '' },
             { 'modified', separator = '' },
           },
           lualine_x = {
-
             function()
               local count = #vim.fn.getbufinfo { buflisted = 1 }
               return '📂' .. count
             end,
-
-            get_lsp_name,
-            'encoding',
+            { 'encoding' },
+            {
+              'lsp_status',
+              icon = '',
+              symbols = {
+                spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+                done = '✓',
+                separator = ' ',
+              },
+              -- List of LSP names to ignore (e.g., `null-ls`):
+              ignore_lsp = { 'copilot' },
+              show_name = true,
+            },
           },
           lualine_y = {
             { 'progress', color = { bg = '#2c323c' } },
@@ -71,77 +103,13 @@ return {
           lualine_z = {
             {
               function()
-                local buf_lines = vim.api.nvim_buf_line_count(0)
-                local file_size = vim.fn.getfsize(vim.fn.expand '%')
-
-                -- Count TODOs/FIXMEs in current buffer
-                local todo_count = 0
-                local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-                for _, line in ipairs(lines) do
-                  if line:match 'TODO' or line:match 'FIXME' or line:match 'HACK' or line:match 'NOTE' then
-                    todo_count = todo_count + 1
-                  end
-                end
-
-                local size_str = ''
-                if file_size > 1024 * 1024 then
-                  size_str = string.format('%.1fMB', file_size / (1024 * 1024))
-                elseif file_size > 1024 then
-                  size_str = string.format('%.1fKB', file_size / 1024)
-                else
-                  size_str = file_size .. 'B'
-                end
-
-                local stats = '📄' .. buf_lines
-                if file_size > 0 then
-                  stats = stats .. ' 💾' .. size_str
-                end
-                if todo_count > 0 then
-                  stats = stats .. ' 📝' .. todo_count
-                end
-
-                return stats
+                return lualine_stats.stats
               end,
               color = { bg = '#0a101a' },
             },
           },
         },
-        -- inactive_sections = {
-        --   lualine_a = {},
-        --   lualine_b = {},
-        --   lualine_c = { 'filename' },
-        --   lualine_x = { 'location' },
-        --   lualine_y = {},
-        --   lualine_z = {},
-        -- },
-        -- tabline = {},
-        -- winbar = {
-        --   lualine_c = {
-        -- {
-        --   'navic',
-        --   color_correction = 'dynamic',
-        -- },
-        -- },
-        -- lualine_x = {},
-        -- },
-        -- inactive_winbar = {
-        --   lualine_c = { { 'navic' } },
-        -- },
-        -- extensions = {},
       }
     end,
   },
-
-  -- {
-  --   'SmiteshP/nvim-navic',
-  --   dependencies = 'neovim/nvim-lspconfig',
-  --   opts = {
-  --     lsp = {
-  --       auto_attach = true,
-  --     },
-  --     highlight = true,
-  --     separator = ' > ',
-  --     depth_limit = 5,
-  --   },
-  -- },
 }
