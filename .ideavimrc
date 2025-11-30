@@ -1,3 +1,4 @@
+" Plugins ---------------------------------------------------------
 Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-commentary'
 Plug 'michaeljsmith/vim-indent-object'
@@ -17,32 +18,33 @@ set ignorecase
 set smartcase
 set incsearch
 set hlsearch
-set which-key
 
 let mapleader = " "
 
-nnoremap <A-n> :tabnext<CR>
-nnoremap <A-p> :tabprev<CR>\
-
-" Navigation between UI elements (splits, file tree, etc.)
+" SPLITS -------------------------------------
 nnoremap <C-h> <Action>(PrevSplitter)
 nnoremap <C-l> <Action>(NextSplitter)
 nnoremap <C-k> <Action>(PrevSplitter)
 nnoremap <C-j> <Action>(NextSplitter)
+nnoremap <leader>sv :vsplit<CR>
+nnoremap <leader>sh :split<CR>
+nnoremap <C-A-h> <Action>(ResizeSplitterLeft)
+nnoremap <C-A-l> <Action>(ResizeSplitterRight)
+nnoremap <C-A-k> <Action>(ResizeSplitterUp)
+nnoremap <C-A-j> <Action>(ResizeSplitterDown)
+
+
 
 map <leader>e :NERDTreeToggle<CR>
-map <leader>vs <Action>(SplitVertically)
-map <leader>hs <Action>(SplitHorizontally)
-map <leader>wc <Action>(Unsplit)
 
-" New keybindings
+" FILE SEARCH / NAVIGATION --------------------
 map <leader><leader> <action>(GotoFile)
 map <leader>/ <action>(FindInPath)
-map <C-1> <Action>(SplitVertically)
-map <C-2> <Action>(SplitHorizontally)
+
 map <C-/> <Action>(ActivateTerminalToolWindow)
 map <leader>n <action>(NewScratchFile)
-map <leader>q <action>(CloseContent)
+
+" Code Navigation --------------------
 nmap <leader>gd <Action>(GotoDeclaration)
 nmap <leader>gy <Action>(GotoTypeDeclaration)
 nmap <leader>gi <Action>(GotoImplementation)
@@ -50,6 +52,7 @@ nmap <leader>gu <Action>(ShowUsages)
 nmap <leader>gt <Action>(GotoTest)
 nmap <leader>gf <Action>(Back)
 nmap <leader>gb <Action>(Forward)
+nnoremap <leader>i <Action>(ParameterInfo)
 map <F5> <Action>(Run)
 map <F8> <Action>(Stop)
 map <leader>f <Action>ReformatCode
@@ -59,13 +62,18 @@ nmap <Right> :echo "Use l to move!!"<CR>
 nmap <Up>    :echo "Use k to move!!"<CR>
 nmap <Down>  :echo "Use j to move!!"<CR>
 
-map <Leader>1 :tabn 1<CR>
-map <Leader>2 :tabn 2<CR>
-map <Leader>3 :tabn 3<CR>
-map <Leader>4 :tabn 4<CR>
-map <Leader>5 :tabn 5<CR>
-map <Leader>6 :tabn 6<CR>
-map <Leader>7 :tabn 7<CR>
-map <Leader>8 :tabn 8<CR>
-map <Leader>9 :tabn 9<CR>
-map <Leader>0 :tabn 10<CR>
+" BUFFERS ------------------------------------
+nnoremap ,1 :tabn 1<CR>
+nnoremap ,2 :tabn 2<CR>
+nnoremap ,3 :tabn 3<CR>
+nnoremap ,4 :tabn 4<CR>
+nnoremap ,5 :tabn 5<CR>
+nnoremap ,6 :tabn 6<CR>
+nnoremap ,7 :tabn 7<CR>
+nnoremap ,8 :tabn 8<CR>
+nnoremap ,9 :tabn 9<CR>
+nnoremap ,0 :tabn 10<CR>
+
+nnoremap ,<Tab> :tabnext<CR>
+nnoremap ,<S-Tab> :tabprevious<CR>
+map ,q <action>(CloseContent)

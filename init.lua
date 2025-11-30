@@ -105,6 +105,11 @@ vim.api.nvim_create_autocmd('BufReadPre', {
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- to hsow code domumentation with <leader>i
+vim.keymap.set('n', '<leader>i', function()
+  vim.lsp.buf.hover()
+end, { desc = 'Show LSP hover documentation' })
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -710,7 +715,20 @@ require('lazy').setup({
       fuzzy = { implementation = 'rust' },
 
       -- Shows a signature help window while you type arguments for a function
-      signature = { enabled = true },
+      signature = {
+        enabled = true,
+        auto_show = true,
+        hide_on_completion = false,
+        trigger = {
+          enabled = true,
+          show_on_trigger_character = true,
+        },
+        window = {
+          treesitter_highlighting = true,
+          show_documentation = true,
+          border = 'rounded',
+        },
+      },
     },
   },
 
