@@ -2,7 +2,9 @@ return {
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
-    event = 'InsertEnter',
+    -- event = 'InsertEnter', --i dont wanna bloat my insert enter so yeah.. i dont need copilot over there
+    -- event = 'CmdLineEnter', --more optimize way to do things
+    event = 'VeryLazy', --more optimize way to do things
     config = function()
       require('copilot').setup {
         suggestion = { enabled = false },

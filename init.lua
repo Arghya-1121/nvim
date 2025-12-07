@@ -237,7 +237,7 @@ require('lazy').setup({
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+    event = 'VeryLazy', -- Sets the loading event to 'VimEnter'
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.o.timeoutlen
@@ -735,7 +735,7 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   {
     'folke/todo-comments.nvim',
-    event = 'InsertEnter',
+    event = 'VeryLazy',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
       vim.keymap.set('n', ']t', function()
