@@ -232,12 +232,6 @@ return {
           map('n', '<leader>jsd', ':!./gradlew bootRun --debug-jvm<CR>', 'Spring Boot Debug')
           map('n', '<leader>jsp', ':!./gradlew bootJar && java -jar build/libs/*.jar<CR>', 'Spring Boot Production')
 
-          -- DAP keymaps
-          map('n', '<F5>', require('dap').continue, 'Debug Continue')
-          map('n', '<F9>', require('dap').toggle_breakpoint, 'Toggle Breakpoint')
-          map('n', '<F10>', require('dap').step_over, 'Step Over')
-          map('n', '<F11>', require('dap').step_into, 'Step Into')
-          map('n', '<F12>', require('dap').step_out, 'Step Out')
         end,
       }
 
