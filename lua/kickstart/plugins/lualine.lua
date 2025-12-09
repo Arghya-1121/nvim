@@ -53,7 +53,7 @@ return {
       return {
         options = {
           icons_enabled = true,
-          theme = 'auto',
+          theme = 'codedark',
           disabled_filetypes = {
             statusline = { 'dashboard', 'alpha', 'ministarter', 'snacks_dashboard' },
             winbar = {},
@@ -69,7 +69,7 @@ return {
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { { 'branch', color = { bg = '#2c323c' } } },
+          lualine_b = { { 'branch', color = { bg = '#151515' } } },
           lualine_c = {
             { 'diff' },
             { 'diagnostics', update_in_insert = true },
@@ -97,15 +97,15 @@ return {
             },
           },
           lualine_y = {
-            { 'progress', color = { bg = '#2c323c' } },
-            { 'location', color = { bg = '#2c323c' } },
+            { 'progress', color = { bg = '#151515' } },
+            { 'location', color = { bg = '#151515' } },
           },
           lualine_z = {
             {
               function()
                 return lualine_stats.stats
               end,
-              color = { bg = '#0a101a' },
+              color = { bg = '#101010', fg = '#ffffff' },
             },
           },
         },

@@ -4,14 +4,12 @@ return {
     config = true,
     cmd = 'ToggleTerm',
     keys = {
-      { '<F4>', '<cmd>ToggleTerm<cr>', desc = 'Toggle floating terminal' },
       { '<C-\\>', '<cmd>ToggleTerm direction=float<cr>', desc = 'Toggle floating terminal' },
       { '<C-\\>', [[<C-\><C-n><cmd>ToggleTerm direction=float<cr>]], mode = 't', desc = 'Toggle floating terminal (from terminal)' },
       { '<leader>tt', '<cmd>2ToggleTerm size=15 direction=horizontal<cr>', desc = 'Toggle horizontal terminal' },
       { '<leader>tt', [[<leader>tt<C-n><cmd>2ToggleTerm size=15 direction=horizontal<cr>]], mode = 't', desc = 'Toggle horizontal terminal (from terminal)' },
     },
     opts = {
-      open_mapping = [[<F4>]],
       direction = 'float',
       shade_filetypes = {},
       hide_numbers = true,

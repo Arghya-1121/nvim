@@ -717,8 +717,6 @@ require('lazy').setup({
       -- Shows a signature help window while you type arguments for a function
       signature = {
         enabled = true,
-        auto_show = true,
-        hide_on_completion = false,
         trigger = {
           enabled = true,
           show_on_trigger_character = true,
