@@ -1,21 +1,11 @@
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- to disable the cmd line when idle
 vim.opt.cmdheight = 0
 
--- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
--- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
-
--- Make line numbers default
 vim.o.number = true
 vim.o.relativenumber = true
 -- vim.o.mouse = 'n'
@@ -26,13 +16,8 @@ vim.opt.softtabstop = 4 -- Number of spaces inserted when tab is pressed.
 vim.opt.shiftwidth = 4 -- Number of spaces to use for auto-indent.
 vim.opt.expandtab = true -- Use spaces instead of tabs.
 
--- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
 
--- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
@@ -59,6 +44,13 @@ vim.o.timeoutlen = 300
 -- Configure how new splits should be opened
 vim.o.splitright = true
 vim.o.splitbelow = true
+
+--NOTE: temp fix need to try it a lot
+-- Disable builtin snippet <Tab> and <S-Tab>
+vim.keymap.set('i', '<Tab>', '<Tab>', { noremap = true })
+vim.keymap.set('s', '<Tab>', '<Tab>', { noremap = true })
+vim.keymap.set('i', '<S-Tab>', '<S-Tab>', { noremap = true })
+vim.keymap.set('s', '<S-Tab>', '<S-Tab>', { noremap = true })
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
@@ -506,7 +498,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
