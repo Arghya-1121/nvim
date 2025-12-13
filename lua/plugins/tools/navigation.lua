@@ -1,21 +1,22 @@
 return {
   {
-    "nvim-treesitter/nvim-treesitter-context",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    'nvim-treesitter/nvim-treesitter-context',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       enable = true,
       max_lines = 3,
-      trim_scope = "outer",
+      trim_scope = 'outer',
       patterns = {
         default = {
-          "class",
-          "function",
-          "method",
-          "for",
-          "while",
-          "if",
-          "switch",
-          "case",
+          'class',
+          'function',
+          'method',
+          'for',
+          'while',
+          'if',
+          'switch',
+          'case',
         },
       },
     },
