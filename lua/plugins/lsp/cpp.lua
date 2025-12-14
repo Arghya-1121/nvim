@@ -1,7 +1,7 @@
 return {
   {
     'Civitasv/cmake-tools.nvim',
-    ft = { 'cmake' },
+    ft = { 'cmake', 'c', 'cpp' },
     cmd = { 'CMakeGenerate', 'CMakeBuild', 'CMakeClean' },
     opts = {},
   },
