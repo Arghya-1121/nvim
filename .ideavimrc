@@ -11,7 +11,6 @@ set NERDTree
 set mini-ai
 set surround
 set showmode
-set linenumber
 set relativenumber
 set clipboard+=unnamedplus
 set ignorecase

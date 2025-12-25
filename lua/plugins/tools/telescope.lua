@@ -83,6 +83,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
       noremap = true,
       silent = true,
     })
+    vim.keymap.set('n', '<leader>m', function()
+      require('telescope.builtin').marks()
+    end, { desc = 'Telescope marks' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>sb', function()
