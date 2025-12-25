@@ -2,9 +2,8 @@ return {
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
-    -- event = 'InsertEnter', --i dont wanna bloat my insert enter so yeah.. i dont need copilot over there
-    -- event = 'CmdLineEnter', --more optimize way to do things
-    event = 'VeryLazy', --more optimize way to do things
+    -- event = 'InsertEnter', -- more optimize way to use this only if the ai code completion is being used
+    cmd = { 'Copilot' },
     config = function()
       require('copilot').setup {
         suggestion = { enabled = false },
@@ -19,6 +18,7 @@ return {
       { 'zbirenbaum/copilot.lua' },
       { 'nvim-lua/plenary.nvim' },
     },
+    cmd = { 'Copilot' },
 
     keys = {
       {

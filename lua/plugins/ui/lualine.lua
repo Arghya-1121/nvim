@@ -39,7 +39,7 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    event = 'VeryLazy',
+    event = 'UIEnter',
     init = function()
       if vim.fn.argc(-1) > 0 then
         --set an enpty statusline till lualine loades
