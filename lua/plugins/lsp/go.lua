@@ -5,6 +5,17 @@ return {
     dependencies = {
       'ray-x/guihua.lua',
       'nvim-treesitter/nvim-treesitter',
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          ensure_installed = {
+            'gopls', -- Go language server
+            'goimports', -- Formatter
+            'golangci-lint', -- Linter
+            'gotests', --Test
+          },
+        },
+      },
     },
     config = function()
       require('go').setup()
@@ -59,4 +70,3 @@ return {
     },
   },
 }
-
