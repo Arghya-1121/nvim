@@ -94,6 +94,60 @@ vim.api.nvim_create_autocmd('BufReadPre', {
   end,
 })
 
+-- for pdf, i want to open it inside evince and detach it
+vim.api.nvim_create_autocmd('BufReadCmd', {
+  pattern = '*.pdf',
+  callback = function()
+    local file = vim.fn.expand '<afile>'
+    vim.fn.jobstart({ 'evince', file }, { detach = true })
+    vim.cmd 'bdelete!'
+  end,
+})
+-- use geeqie for the image viewer
+vim.api.nvim_create_autocmd('BufReadCmd', {
+  pattern = { '*.png', '*.jpg', '*.jpeg', '*.webp', '*.gif', '*.bmp', '*.tiff' },
+  callback = function()
+    local file = vim.fn.expand '<afile>'
+    vim.fn.jobstart({ 'geeqie', file }, { detach = true })
+    vim.cmd 'bdelete!'
+  end,
+})
+--use VLC for video
+vim.api.nvim_create_autocmd('BufReadCmd', {
+  pattern = {
+    '*.mp4',
+    '*.mkv',
+    '*.avi',
+    '*.mov',
+    '*.webm',
+    '*.flv',
+    '*.wmv',
+    '*.m4v',
+  },
+  callback = function()
+    local file = vim.fn.expand '<afile>'
+    vim.fn.jobstart({ 'vlc', file }, { detach = true })
+    vim.cmd 'bdelete!'
+  end,
+})
+-- use mpv for audio
+vim.api.nvim_create_autocmd('BufReadCmd', {
+  pattern = {
+    '*.mp3',
+    '*.flac',
+    '*.wav',
+    '*.ogg',
+    '*.m4a',
+    '*.aac',
+    '*.opus',
+  },
+  callback = function()
+    local file = vim.fn.expand '<afile>'
+    vim.fn.jobstart({ 'mpv', '--no-video', file }, { detach = true })
+    vim.cmd 'bdelete!'
+  end,
+})
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
