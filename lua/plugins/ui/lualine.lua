@@ -79,6 +79,13 @@ return {
           },
           lualine_x = {
             function()
+              local status = require('music-controls')._statusline()
+              if status == 'Unknown Unknown - Unknown' then
+                return ''
+              end
+              return status
+            end,
+            function()
               local count = #vim.fn.getbufinfo { buflisted = 1 }
               return '📂' .. count
             end,
