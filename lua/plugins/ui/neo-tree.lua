@@ -6,18 +6,10 @@ return {
     {
       '<leader>e',
       function()
-        require('neo-tree.command').execute { reveal, source = 'filesystem' }
+        require('neo-tree.command').execute { toggle = true, source = 'filesystem' }
       end,
       desc = 'NeoTree reveal',
-      silent = true,
     },
-    -- {
-    --   '<leader>e',
-    --   function()
-    --     require('neo-tree.command').execute { toggle = true, source = 'filesystem' }
-    --   end,
-    --   desc = 'Toggle file explorer',
-    -- },
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -33,7 +25,7 @@ return {
         hide_dotfiles = false,
         hide_gitignored = false,
         hide_by_name = {},
-        never_show = { '.git', '.idea', '.vscode' },
+        never_show = { '.idea', '.vscode' },
       },
       window = {
         mappings = {
