@@ -6,8 +6,11 @@ return {
     keys = {
       { '<C-\\>', '<cmd>ToggleTerm direction=float<cr>', desc = 'Toggle floating terminal' },
       { '<C-\\>', [[<C-\><C-n><cmd>ToggleTerm direction=float<cr>]], mode = 't', desc = 'Toggle floating terminal (from terminal)' },
-      { '<leader>tt', '<cmd>2ToggleTerm size=15 direction=horizontal<cr>', desc = 'Toggle horizontal terminal' },
-      { '<leader>tt', [[<leader>tt<C-n><cmd>2ToggleTerm size=15 direction=horizontal<cr>]], mode = 't', desc = 'Toggle horizontal terminal (from terminal)' },
+      { '<leader>tf', '<cmd>ToggleTerm direction=float<cr>', desc = 'Toggle floating terminal' },
+      { '<leader>tf', [[<C-\><C-n><cmd>ToggleTerm direction=float<cr>]], mode = 't', desc = 'Toggle floating terminal (from terminal)' },
+      { '<leader>th', '<cmd>2ToggleTerm size=15 direction=horizontal<cr>', desc = 'Toggle horizontal terminal' },
+      { '<leader>th', [[<leader>tt<C-n><cmd>2ToggleTerm size=15 direction=horizontal<cr>]], mode = 't', desc = 'Toggle horizontal terminal (from terminal)' },
+      { '<leader>tt', '<cmd>terminal<cr>', desc = 'Toggle Terminal as a new buffer' },
     },
     opts = {
       direction = 'float',
