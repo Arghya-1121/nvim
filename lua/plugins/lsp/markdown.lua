@@ -33,8 +33,8 @@ return {
         enabled = true,
         sign = true,
         style = 'full',
-        left_pad = 2,
-        right_pad = 2,
+        left_pad = 0,
+        right_pad = 0,
         width = 'block',
         border = 'thin',
         highlight = 'RenderMarkdownCode',
@@ -82,7 +82,7 @@ return {
         pattern = { '*.md', '*.markdown' },
         callback = function()
           vim.cmd 'RenderMarkdown disable'
-          vim.diagnostic.enable(true)
+          vim.diagnostic.enable(false)
         end,
       })
 
@@ -213,4 +213,3 @@ return {
     end,
   },
 }
-

@@ -24,9 +24,18 @@ return {
       {
         '<leader>ai',
         function()
-          require('CopilotChat').toggle()
+          local mode = vim.fn.mode()
+          local opts = {}
+          if mode == 'v' or mode == 'V' or mode == '\22' then -- visual, line-visual, block-visual
+            opts.selection = true
+            -- Optionally, exit visual mode
+            vim.cmd 'normal! gv'
+          end
+          require('CopilotChat').toggle(opts)
+          -- Optionally, prompt for input here if your plugin supports it
         end,
-        desc = 'Toggle AI panel',
+        desc = 'Toggle AI panel (with selection in visual mode)',
+        mode = { 'n', 'v' }, -- allow mapping in both normal and visual mode
       },
       {
         '<leader>ae',

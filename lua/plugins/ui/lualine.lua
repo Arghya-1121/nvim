@@ -68,10 +68,29 @@ return {
           -- },
         },
         sections = {
-          lualine_a = { 'mode' },
-          lualine_b = { { 'branch', color = { bg = '#151515' } } },
+          lualine_a = {
+            {
+              'mode',
+              fmt = function(str)
+                local mode_map = {
+                  ['NORMAL'] = 'N',
+                  ['INSERT'] = 'I',
+                  ['VISUAL'] = 'V',
+                  ['V-LINE'] = 'V-L',
+                  ['V-BLOCK'] = 'V-B',
+                  ['COMMAND'] = 'C',
+                  ['SELECT'] = 'S',
+                  ['S-LINE'] = 'S-L',
+                  ['S-BLOCK'] = 'S-B',
+                  ['REPLACE'] = 'R',
+                  ['TERMINAL'] = 'T',
+                }
+                return mode_map[str] or str:sub(1, 1)
+              end,
+            },
+          },
+          lualine_b = { { 'branch', color = { bg = '#151515' } }, { 'diff', color = { bg = '#151515' } } },
           lualine_c = {
-            { 'diff' },
             { 'diagnostics', update_in_insert = true },
             { 'filetype', icon_only = true },
             { 'filename', path = 1, separator = '' },
@@ -82,6 +101,10 @@ return {
               local status = require('music-controls')._statusline()
               if status == 'Unknown Unknown - Unknown' then
                 return ''
+              end
+              local max_width = 50
+              if #status > max_width then
+                return status:sub(1, max_width - 3) .. '...'
               end
               return status
             end,
