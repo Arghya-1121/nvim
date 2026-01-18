@@ -11,10 +11,10 @@ keymap('n', '<Esc>', '<cmd>nohlsearch<CR>')
 keymap('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Disable arrow keys
-keymap('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-keymap('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-keymap('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-keymap('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+keymap({ 'n', 'i', 'v' }, '<Left>', '<Nop>')
+keymap({ 'n', 'i', 'v' }, '<Right>', '<Nop>')
+keymap({ 'n', 'i', 'v' }, '<Up>', '<Nop>')
+keymap({ 'n', 'i', 'v' }, '<Down>', '<Nop>')
 
 -- Window Navigation
 keymap('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
@@ -39,3 +39,11 @@ keymap('i', '<Tab>', '<Tab>', { noremap = true })
 keymap('s', '<Tab>', '<Tab>', { noremap = true })
 keymap('i', '<S-Tab>', '<S-Tab>', { noremap = true })
 keymap('s', '<S-Tab>', '<S-Tab>', { noremap = true })
+
+-- Nativating in insert mode
+vim.keymap.set({ 'i', 'c' }, '<M-h>', '<Left>')
+vim.keymap.set({ 'i', 'c' }, '<M-l>', '<Right>')
+vim.keymap.set({ 'i', 'c' }, '<M-j>', '<Down>')
+vim.keymap.set({ 'i', 'c' }, '<M-k>', '<Up>')
+vim.keymap.set({ 'i', 'c' }, '<M-w>', '<C-Right>')
+vim.keymap.set({ 'i', 'c' }, '<M-b>', '<C-Left>')
