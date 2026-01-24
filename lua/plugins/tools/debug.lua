@@ -3,147 +3,118 @@ return {
   dependencies = {
     'rcarriga/nvim-dap-ui',
     'nvim-neotest/nvim-nio',
-    'mason-org/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
-    'leoluz/nvim-dap-go',
-    'mfussenegger/nvim-dap-python',
+    'williamboman/mason.nvim',
+    'neovim/nvim-lspconfig',
+    'mfussenegger/nvim-jdtls',
   },
   keys = {
     {
-      '<F8>',
+      '<F5>',
       function()
         require('dap').continue()
       end,
-      desc = 'Debug: Start/Continue',
+      desc = 'DAP Continue',
     },
     {
-      '<F5>',
-      function()
-        require('dap').step_into()
-      end,
-      desc = 'Debug: Step Into',
-    },
-    {
-      '<F6>',
+      '<F10>',
       function()
         require('dap').step_over()
       end,
-      desc = 'Debug: Step Over',
+      desc = 'DAP Step Over',
     },
     {
-      '<F7>',
+      '<F11>',
+      function()
+        require('dap').step_into()
+      end,
+      desc = 'DAP Step Into',
+    },
+    {
+      '<F12>',
       function()
         require('dap').step_out()
       end,
-      desc = 'Debug: Step Out',
-    },
-    {
-      '<F8>',
-      function()
-        require('dap').step_back()
-      end,
-      desc = 'Debug: Step Out',
+      desc = 'DAP Step Out',
     },
     {
       '<leader>b',
       function()
         require('dap').toggle_breakpoint()
       end,
-      desc = 'Debug: Toggle Breakpoint',
+      desc = 'DAP Breakpoint',
     },
     {
-      '<leader>B',
-      function()
-        require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-      end,
-      desc = 'Debug: Set Breakpoint',
-    },
-    {
-      '<F12>',
+      '<leader>du',
       function()
         require('dapui').toggle()
       end,
-      desc = 'Debug: See last session result.',
+      desc = 'DAP UI',
     },
   },
-  config = function()
+  config = function(_, _)
     local dap = require 'dap'
     local dapui = require 'dapui'
 
     require('mason-nvim-dap').setup {
+      ensure_installed = { 'codelldb', 'java-debug-adapter' },
       automatic_installation = true,
       handlers = {},
-      ensure_installed = {
-        'delve', -- Go
-        'js-debug-adapter', -- JavaScript, TypeScript, etc.
-        'chrome-debug-adapter', -- JavaScript, TypeScript, etc.
-        'node2', -- JavaScript, TypeScript, etc.
-        'bash-debug-adapter', -- Bash
-        'codelldb', -- C, C++, Rust
-        'debugpy', -- Python
-        'python', -- Python
-        'dart-debug-adapter', -- Dart
-        'dart-test-adapter', -- Dart
-        'flutter-debug-adapter', -- Flutter
-        'java-debug-adapter', -- Java
-        'java-test', -- Java
-        'kotlin-debug-adapter', -- Kotlin
-        'kotlin-test', -- Kotlin
-        'yaml-debug-adapter', -- YAML
-        'yaml-test-adapter', -- YAML
-      },
     }
 
-    dapui.setup {
-      icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
-      controls = {
-        icons = {
-          pause = '⏸',
-          play = '▶',
-          step_into = '⏎',
-          step_over = '⏭',
-          step_out = '⏮',
-          step_back = 'b',
-          run_last = '▶▶',
-          terminate = '⏹',
-          disconnect = '⏏',
-        },
-      },
-    }
-
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    require('dap-go').setup {
-      delve = {
-        detached = vim.fn.has 'win32' == 0,
-      },
-    }
-
-    -- C/C++ Configuration
-    local dap = require 'dap'
     dap.adapters.codelldb = {
       type = 'server',
       port = '${port}',
       executable = {
-        command = 'codelldb',
+        command = vim.fn.stdpath 'data' .. '/mason/bin/codelldb',
         args = { '--port', '${port}' },
       },
     }
 
     dap.configurations.cpp = {
       {
-        name = 'Launch file',
+        name = 'Launch',
         type = 'codelldb',
         request = 'launch',
         program = function()
-          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          return vim.fn.input('Executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+      },
+    }
+    dap.configurations.java = {
+      {
+        type = 'java',
+        request = 'launch',
+        name = 'Java Launch',
+        mainClass = function()
+          return vim.fn.input 'Main class: '
+        end,
+        projectName = function()
+          return vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+        end,
+      },
+    }
+    dap.configurations.rust = {
+      {
+        name = 'Rust Launch',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.getcwd() .. '/target/debug/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
         end,
         cwd = '${workspaceFolder}',
         stopOnEntry = false,
       },
     }
     dap.configurations.c = dap.configurations.cpp
+    dap.configurations['c++'] = dap.configurations.cpp
+    assert(dap.configurations.rust, 'Rust DAP config missing')
+    assert(dap.configurations.cpp, 'cpp DAP config missing')
+    dapui.setup()
+    dap.listeners.after.event_initialized['dapui'] = dapui.open
+    dap.listeners.before.event_terminated['dapui'] = dapui.close
+    dap.listeners.before.event_exited['dapui'] = dapui.close
   end,
 }
