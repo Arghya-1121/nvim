@@ -71,22 +71,23 @@ return {
           lualine_a = {
             {
               'mode',
-              fmt = function(str)
-                local mode_map = {
-                  ['NORMAL'] = 'N',
-                  ['INSERT'] = 'I',
-                  ['VISUAL'] = 'V',
-                  ['V-LINE'] = 'V-L',
-                  ['V-BLOCK'] = 'V-B',
-                  ['COMMAND'] = 'C',
-                  ['SELECT'] = 'S',
-                  ['S-LINE'] = 'S-L',
-                  ['S-BLOCK'] = 'S-B',
-                  ['REPLACE'] = 'R',
-                  ['TERMINAL'] = 'T',
-                }
-                return mode_map[str] or str:sub(1, 1)
-              end,
+              -- for just a letter... sometimes I like it sometimes I dont
+              -- fmt = function(str)
+              --   local mode_map = {
+              --     ['NORMAL'] = 'N',
+              --     ['INSERT'] = 'I',
+              --     ['VISUAL'] = 'V',
+              --     ['V-LINE'] = 'V-L',
+              --     ['V-BLOCK'] = 'V-B',
+              --     ['COMMAND'] = 'C',
+              --     ['SELECT'] = 'S',
+              --     ['S-LINE'] = 'S-L',
+              --     ['S-BLOCK'] = 'S-B',
+              --     ['REPLACE'] = 'R',
+              --     ['TERMINAL'] = 'T',
+              --   }
+              --   return mode_map[str] or str:sub(1, 1)
+              -- end,
             },
           },
           lualine_b = { { 'branch', color = { bg = '#151515' } }, { 'diff', color = { bg = '#151515' } } },

@@ -7,69 +7,15 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     ft = { 'markdown', 'md' },
-    opts = {
-      heading = {
-        enabled = true,
-        sign = true,
-        icons = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
-        backgrounds = {
-          'RenderMarkdownH1Bg',
-          'RenderMarkdownH2Bg',
-          'RenderMarkdownH3Bg',
-          'RenderMarkdownH4Bg',
-          'RenderMarkdownH5Bg',
-          'RenderMarkdownH6Bg',
-        },
-        foregrounds = {
-          'RenderMarkdownH1',
-          'RenderMarkdownH2',
-          'RenderMarkdownH3',
-          'RenderMarkdownH4',
-          'RenderMarkdownH5',
-          'RenderMarkdownH6',
-        },
-      },
-      code = {
-        enabled = true,
-        sign = true,
-        style = 'full',
-        left_pad = 0,
-        right_pad = 0,
-        width = 'block',
-        border = 'thin',
-        highlight = 'RenderMarkdownCode',
-      },
-      bullet = {
-        enabled = true,
-        icons = { '●', '○', '◆', '◇' },
-      },
-      checkbox = {
-        enabled = true,
-        unchecked = { icon = '󰄱 ' },
-        checked = { icon = '󰱒 ' },
-      },
-      quote = {
-        enabled = true,
-        icon = '▋',
-        highlight = 'RenderMarkdownQuote',
-      },
-      pipe_table = {
-        enabled = true,
-        style = 'full',
-        cell = 'padded',
-      },
-      callout = {
-        note = { raw = '[!NOTE]', rendered = '󰋽 Note', highlight = 'RenderMarkdownInfo' },
-        tip = { raw = '[!TIP]', rendered = '󰌶 Tip', highlight = 'RenderMarkdownSuccess' },
-        important = { raw = '[!IMPORTANT]', rendered = '󰅾 Important', highlight = 'RenderMarkdownHint' },
-        warning = { raw = '[!WARNING]', rendered = '󰀪 Warning', highlight = 'RenderMarkdownWarn' },
-        caution = { raw = '[!CAUTION]', rendered = '󰳦 Caution', highlight = 'RenderMarkdownError' },
-      },
-    },
-    config = function(_, opts)
-      require('render-markdown').setup(opts)
-
-      -- Automatically toggle render mode and diagnostics
+    config = function()
+      require('render-markdown').setup({
+        heading = { enabled = true, sign = true },
+        code = { enabled = true, sign = true },
+        bullet = { enabled = true },
+        checkbox = { enabled = true },
+        quote = { enabled = true },
+        pipe_table = { enabled = true },
+      })
       vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave' }, {
         pattern = { '*.md', '*.markdown' },
         callback = function()
@@ -77,7 +23,6 @@ return {
           vim.diagnostic.enable(false)
         end,
       })
-
       vim.api.nvim_create_autocmd('InsertEnter', {
         pattern = { '*.md', '*.markdown' },
         callback = function()
@@ -85,15 +30,12 @@ return {
           vim.diagnostic.enable(false)
         end,
       })
-
-      -- Keymaps for markdown
+      -- Useful keymaps
+      vim.keymap.set('n', '<leader>mr', ':RenderMarkdown reload<CR>', { desc = 'Reload Markdown Render' })
       vim.keymap.set('n', '<leader>mt', ':RenderMarkdown toggle<CR>', { desc = 'Toggle Markdown Render' })
-      vim.keymap.set('n', '<leader>me', ':RenderMarkdown enable<CR>', { desc = 'Enable Markdown Render' })
-      vim.keymap.set('n', '<leader>md', ':RenderMarkdown disable<CR>', { desc = 'Disable Markdown Render' })
     end,
   },
 
-  -- Markdown Preview
   {
     'iamcco/markdown-preview.nvim',
     cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
@@ -130,7 +72,6 @@ return {
       vim.g.mkdp_port = ''
       vim.g.mkdp_page_title = '「${name}」'
       vim.g.mkdp_filetypes = { 'markdown' }
-
       -- Keymaps
       vim.keymap.set('n', '<leader>mp', ':MarkdownPreview<CR>', { desc = 'Markdown Preview' })
       vim.keymap.set('n', '<leader>ms', ':MarkdownPreviewStop<CR>', { desc = 'Stop Markdown Preview' })
@@ -138,10 +79,9 @@ return {
     end,
   },
 
-  -- Better markdown editing
   {
     'bullets-vim/bullets.vim',
-    ft = { 'markdown', 'text' },
+    ft = { 'markdown', 'text', 'gitcommit' },
     config = function()
       vim.g.bullets_enabled_file_types = { 'markdown', 'text', 'gitcommit' }
       vim.g.bullets_enable_in_empty_buffers = 0
@@ -157,7 +97,6 @@ return {
     end,
   },
 
-  -- Table mode for easy table creation
   {
     'dhruvasagar/vim-table-mode',
     ft = { 'markdown' },
@@ -165,14 +104,15 @@ return {
       vim.g.table_mode_corner = '|'
       vim.g.table_mode_corner_corner = '|'
       vim.g.table_mode_header_fillchar = '-'
-
+      vim.g.table_mode_always_active = 1
+      vim.g.table_mode_auto_align = 1
+      vim.g.table_mode_syntax = 1
       -- Keymaps
       vim.keymap.set('n', '<leader>mm', ':TableModeToggle<CR>', { desc = 'Toggle Table Mode' })
       vim.keymap.set('n', '<leader>mr', ':TableModeRealign<CR>', { desc = 'Realign Table' })
     end,
   },
 
-  -- Markdown TOC generator
   {
     'mzlogin/vim-markdown-toc',
     ft = { 'markdown' },
@@ -182,7 +122,6 @@ return {
       vim.g.vmt_fence_text = 'TOC'
       vim.g.vmt_fence_closing_text = '/TOC'
       vim.g.vmt_fence_hidden_markdown_style = 'GFM'
-
       -- Keymaps
       vim.keymap.set('n', '<leader>mT', ':GenTocGFM<CR>', { desc = 'Generate TOC (GitHub)' })
       vim.keymap.set('n', '<leader>mu', ':UpdateToc<CR>', { desc = 'Update TOC' })
@@ -190,7 +129,6 @@ return {
     end,
   },
 
-  -- Peek markdown in floating window
   {
     'toppair/peek.nvim',
     build = 'deno task --quiet build:fast',
@@ -207,7 +145,6 @@ return {
         throttle_at = 200000,
         throttle_time = 'auto',
       }
-
       vim.keymap.set('n', '<leader>mo', ':PeekOpen<CR>', { desc = 'Peek Open' })
       vim.keymap.set('n', '<leader>mc', ':PeekClose<CR>', { desc = 'Peek Close' })
     end,
