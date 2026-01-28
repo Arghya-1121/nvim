@@ -7,9 +7,9 @@ return {
     local bufferline = require 'bufferline'
     bufferline.setup {
       highlights = {
-        buffer_selected = { italic = true },
-        buffer_visible = { italic = false },
-        buffer = { italic = false },
+        buffer_selected = { italic = true, bold = true },
+        buffer_visible = { italic = false, bold = false },
+        buffer = { italic = false, bold = true },
       },
       options = {
         mode = 'buffers',
@@ -30,13 +30,16 @@ return {
             separator = true,
           },
         },
-        max_name_length = 14,
+        max_name_length = 15,
         max_prefix_length = 10,
         tab_size = 12,
         truncate_names = true,
         show_buffer_close_icons = true,
         show_close_icon = false,
-        always_show_bufferline = false,
+        always_show_bufferline = true,
+        exclude = {
+          filetype = { 'starter' },
+        },
       },
     }
 

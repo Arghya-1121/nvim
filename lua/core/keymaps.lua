@@ -47,3 +47,5 @@ vim.keymap.set({ 'i', 'c' }, '<M-j>', '<Down>')
 vim.keymap.set({ 'i', 'c' }, '<M-k>', '<Up>')
 vim.keymap.set({ 'i', 'c' }, '<M-w>', '<C-Right>')
 vim.keymap.set({ 'i', 'c' }, '<M-b>', '<C-Left>')
+
+-- Tabs

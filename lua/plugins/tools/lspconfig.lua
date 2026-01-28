@@ -200,8 +200,9 @@ return {
       'codelldb', --c/cpp/rust
       'cpptools', --cpp
       'gradle-language-server', --gradle
-      'java-debug-adapter', --java
-      'jdtls', --java
+      "jdtls", --java
+      "java-debug-adapter", --java
+      "java-test", --java
       'kotlin-debug-adapter', --kotlin
       'kotlin-language-server', --kotlin
       'kotlin-lsp', --kotlin
@@ -221,6 +222,7 @@ return {
       'stylua', --lua
       'typescript-language-server', --ts
       'js-debug-adapter', --js
+      'markdownlint', --markdown
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -48,12 +48,73 @@ return { -- Fuzzy Finder (files, lsp, etc)
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
       --
-      -- defaults = {
-      --   mappings = {
-      --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-      --   },
-      -- },
-      -- pickers = {}
+      defaults = {
+        -- mappings = {
+        --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+        -- },
+        file_ignore_patterns = {
+          -- general
+          'node_modules',
+          '.git/',
+          'dist',
+          'build',
+
+          -- secrets / credentials
+          '%.env',
+          '%.env%..*',
+          '%.pem',
+          '%.key',
+          '%.p12',
+          '%.crt',
+          '%.cer',
+          '%.jks',
+          '%.keystore',
+          -- config secrets
+          '%.secrets?',
+          'secrets?/',
+
+          -- Editor / OS junk
+          '.DS_Store',
+          'Thumbs.db',
+          '.idea/',
+          '.vscode/',
+          '.history/',
+          '.cache/',
+          '.tox/',
+          '.coverage',
+          'coverage/',
+          '.nyc_output/',
+          '.turbo/',
+          '.next/',
+          '.svelte-kit/',
+          '.gradle/',
+          'build/',
+
+          -- Flutter / Dart
+          '.dart_tool/',
+          'build/',
+          'ios/Pods/',
+          'android/.gradle/',
+          'android/build/',
+          '.flutter-plugins',
+          '.flutter-plugins-dependencies',
+
+          -- Rust / Cargo
+          'target/',
+
+          -- Python
+          '__pycache__/',
+          '%.pyc',
+          '%.pyo',
+          '.pytest_cache/',
+          '.mypy_cache/',
+          '.ruff_cache/',
+          '.venv/',
+          'venv/',
+          'env/',
+        },
+      },
+      pickers = { find_files = { hidden = true } },
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
